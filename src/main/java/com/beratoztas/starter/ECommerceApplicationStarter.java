@@ -1,13 +1,14 @@
-package com.beratoztas.E_Commerce;
+package com.beratoztas.starter;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class ECommerceApplication {
+public class ECommerceApplicationStarter {
 
 	public static void main(String[] args) {
-		SpringApplication.run(ECommerceApplication.class, args);
+		SpringApplication.run(ECommerceApplicationStarter.class, args);
+		System.out.println("Hello E-Commerce");
 	}
 
 }
