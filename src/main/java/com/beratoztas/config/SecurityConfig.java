@@ -43,9 +43,8 @@ public class SecurityConfig {
 	public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
 		// Şu an için tüm isteklere izin veriyoruz
 		httpSecurity.csrf()
-		.disable() // CSRF korumasını devre dışı bırakıyoruz, ancak production ortamında aktif
-										// olmalı
-				.authorizeRequests()
+		.disable() // CSRF korumasını devre dışı bırakıyoruz, ancak production ortamında aktif  olmalı
+				.authorizeRequests()	
 				.anyRequest()
 				.permitAll() // Şu an için tüm isteklere izin veriyoruz
 				.and()

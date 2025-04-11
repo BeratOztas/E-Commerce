@@ -27,7 +27,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class User extends BaseEntity implements UserDetails {
+public class User extends BaseEntity {
 
 	@Column(name = "username",unique = true ,nullable = false)
 	private String username;
@@ -51,8 +51,4 @@ public class User extends BaseEntity implements UserDetails {
 	@OneToMany(mappedBy = "user" ,cascade = CascadeType.ALL)
 	private List<Order> orders;
 
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return List.of(new SimpleGrantedAuthority(userRole.name()));
-	}
 }
