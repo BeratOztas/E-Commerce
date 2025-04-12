@@ -12,6 +12,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.beratoztas.entities.User;
+import com.beratoztas.exception.BaseException;
+import com.beratoztas.exception.ErrorMessage;
+import com.beratoztas.exception.MessageType;
 import com.beratoztas.repository.UserRepository;
 import com.beratoztas.requests.LoginRequest;
 import com.beratoztas.requests.RefreshTokenRequest;
@@ -59,10 +62,10 @@ public class AuthenticationServiceImpl implements IAuthenticationService{
 	@Override
 	public ResponseEntity<AuthResponse> register(RegisterRequest request) {
 		if(userRepository.findByUsername(request.getUsername()) !=null) {
-			//Throw new EXCEPTION USERNAME_ALREADY TAKEN
+			throw new BaseException(new ErrorMessage(MessageType.USERNAME_ALREADY_EXIST,request.getUsername()));
 		}
 		if(userRepository.findByEmail(request.getEmail())!=null) {
-			//Throw new EXCEPTION EMAIL_ALREADY EXIST
+			throw new BaseException(new ErrorMessage(MessageType.EMAIL_ALREADY_EXIST, request.getEmail()));
 		}
 		AuthResponse authResponse =new AuthResponse();
 		
@@ -112,7 +115,7 @@ public class AuthenticationServiceImpl implements IAuthenticationService{
 			
 		} catch (Exception e) {
 			// TODO: THROW USERNAME_OR_PASSWORD_INVALID EXCEPTION
-			return null;
+			throw new BaseException(new ErrorMessage(MessageType.USERNAME_OR_PASSWORD_INVALID, e.getMessage()));
 		}
 	}
 

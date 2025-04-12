@@ -15,17 +15,23 @@ import lombok.Setter;
 public class UserResponse extends BaseDto {
 
 	private String username;
-
-	private String password;
 	
+	private String firstName;
+	
+	private String lastName;
+	
+	private String email;
+
 	private UserRole userRole;
 
 	public UserResponse(User user) {
 		this.setId(user.getId());
 		this.setCreatedTime(user.getCreatedTime());
 		this.username =user.getUsername();
+		this.firstName =user.getFirstName();
+		this.lastName =user.getLastName();
+		this.email =user.getEmail();
 		this.userRole =user.getUserRole();
 	}
-	
 	
 }

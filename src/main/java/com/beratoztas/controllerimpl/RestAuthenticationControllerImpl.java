@@ -18,11 +18,11 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/auth")
-public class IRestAuthenticationControllerImpl  implements IRestAuthenticationController{
+public class RestAuthenticationControllerImpl  implements IRestAuthenticationController{
 	
 	private IAuthenticationService authenticationService;
 	
-	public IRestAuthenticationControllerImpl(IAuthenticationService authenticationService) {
+	public RestAuthenticationControllerImpl(IAuthenticationService authenticationService) {
 		this.authenticationService =authenticationService;
 	}
 

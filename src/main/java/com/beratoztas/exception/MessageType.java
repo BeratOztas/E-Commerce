@@ -9,6 +9,10 @@ public enum MessageType {
 	GENERAL_EXCEPTION("9999", "Genel bir hata oluştu."),
 	USERNAME_OR_PASSWORD_INVALID("1004","Kullanıcı adı veya parola yanlış"),
 	TOKEN_IS_EXPIRED("1002", "Token'ın süresi geçmiştir"),
+	USER_NOT_FOUND("1003","Kullanıcı bulunamadı."),
+	USERNAME_ALREADY_EXIST("1006","Kullanıcı ismi zaten var."),
+	EMAIL_ALREADY_EXIST("1007","Email önceden alınmış."),
+	USERS_NOT_FOUND("1004","Kullancılar bulunamadı."),
 	USERNAME_NOT_FOUND("1005","Kullanıcı adı bulunamadı.");
 	
 	private String code;
