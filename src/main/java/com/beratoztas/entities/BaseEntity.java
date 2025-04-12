@@ -10,6 +10,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.PrePersist;
 import lombok.Data;
 
 @MappedSuperclass
@@ -17,11 +18,16 @@ import lombok.Data;
 public class BaseEntity {
 
 	@Id
-	@GeneratedValue(strategy =GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	@Column(name = "created_time")
 	@DateTimeFormat(iso = ISO.DATE_TIME)
 	private Date createdTime;
-	
+
+	@PrePersist
+	public void prePersist() {
+		this.createdTime = new Date();
+	}
+
 }

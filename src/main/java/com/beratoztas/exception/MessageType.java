@@ -12,7 +12,9 @@ public enum MessageType {
 	USER_NOT_FOUND("1003","Kullanıcı bulunamadı."),
 	USERNAME_ALREADY_EXIST("1006","Kullanıcı ismi zaten var."),
 	EMAIL_ALREADY_EXIST("1007","Email önceden alınmış."),
-	USERS_NOT_FOUND("1004","Kullancılar bulunamadı."),
+	USERS_NOT_FOUND("1004","Kullanıcılar bulunamadı."),
+	CATEGORY_NOT_FOUND("1008","Category Not Found !!."),
+	CATEGORIES_NOT_FOUND("1009","Categories Not Found !!."),
 	USERNAME_NOT_FOUND("1005","Kullanıcı adı bulunamadı.");
 	
 	private String code;
