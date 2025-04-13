@@ -15,6 +15,8 @@ public class CategoryResponse extends BaseDto {
 
 	private String name;
 	
+	//private List<ProductResponse> products;
+	
 	public CategoryResponse(Category category) {
 		this.setId(category.getId());
 		this.setCreatedTime(category.getCreatedTime());

@@ -24,11 +24,11 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/categories")
-public class RestCategoryController implements IRestCategoryController {
+public class RestCategoryControllerImpl implements IRestCategoryController {
 
 	private ICategoryService categoryService;
 	
-	public RestCategoryController(ICategoryService categoryService) {
+	public RestCategoryControllerImpl(ICategoryService categoryService) {
 		this.categoryService = categoryService;
 	}
 

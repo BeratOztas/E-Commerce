@@ -15,6 +15,8 @@ public enum MessageType {
 	USERS_NOT_FOUND("1004","Kullanıcılar bulunamadı."),
 	CATEGORY_NOT_FOUND("1008","Category Not Found !!."),
 	CATEGORIES_NOT_FOUND("1009","Categories Not Found !!."),
+	PRODUCT_NOT_FOUND("1010","Product Not Found !!."),
+	PRODUCTS_NOT_FOUND("1011","Products Not Found !!."),
 	USERNAME_NOT_FOUND("1005","Kullanıcı adı bulunamadı.");
 	
 	private String code;
