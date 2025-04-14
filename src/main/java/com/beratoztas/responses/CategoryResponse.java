@@ -17,17 +17,16 @@ import lombok.Setter;
 public class CategoryResponse extends BaseDto {
 
 	private String name;
-	
+
 	private List<ProductResponse> products;
-	
+
 	public CategoryResponse(Category category) {
 		this.setId(category.getId());
 		this.setCreatedTime(category.getCreatedTime());
-		this.name=category.getName();
-		
-		if(category.getProducts() !=null) {
-			this.products=category.getProducts()
-					.stream().map(product -> new ProductResponse(product))
+		this.name = category.getName();
+
+		if (category.getProducts() != null) {
+			this.products = category.getProducts().stream().map(product -> new ProductResponse(product))
 					.collect(Collectors.toList());
 		}
 	}

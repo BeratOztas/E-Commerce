@@ -1,5 +1,6 @@
 package com.beratoztas.entities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.annotations.OnDelete;
@@ -38,8 +39,8 @@ public class Cart extends BaseEntity {
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private User user;
 
-	@OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
-	private List<CartItem> cartItems;
+	@OneToMany(mappedBy = "cart", cascade = CascadeType.ALL ,orphanRemoval = true)
+	private List<CartItem> cartItems =new ArrayList<>();
 	
 	@OneToOne(mappedBy = "cart")
 	private Order order;
