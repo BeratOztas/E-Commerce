@@ -15,6 +15,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -29,26 +30,32 @@ import lombok.Setter;
 @NoArgsConstructor
 public class User extends BaseEntity {
 
-	@Column(name = "username",unique = true ,nullable = false)
+	@Column(name = "username", unique = true, nullable = false)
 	private String username;
 
-	@Column(name = "password" ,nullable = false)
+	@Column(name = "password", nullable = false)
 	private String password;
 
-	@Column(name = "user_role" )
+	@Column(name = "user_role")
 	@Enumerated(EnumType.STRING)
-	private UserRole userRole =UserRole.USER;
+	private UserRole userRole = UserRole.USER;
 
-	@Column(name = "first_name" ,nullable = false)
+	@Column(name = "first_name", nullable = false)
 	private String firstName;
 
-	@Column(name = "last_name" ,nullable = false)
+	@Column(name = "last_name", nullable = false)
 	private String lastName;
 
-	@Column(name = "email" ,nullable = false ,unique = true)
+	@Column(name = "email", nullable = false, unique = true)
 	private String email;
-	
-	@OneToMany(mappedBy = "user" ,cascade = CascadeType.ALL)
+
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	private List<Order> orders;
+
+	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+	private Cart cart;
+	
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Address> addresses;
 
 }

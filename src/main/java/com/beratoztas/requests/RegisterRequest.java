@@ -38,5 +38,9 @@ public class RegisterRequest {
 	@Email
 	private String email;
 	
+	private String city;
+    private String district;
+    private String neighborhood;
+    private String street;
 	
 }

@@ -1,7 +1,5 @@
 package com.beratoztas.serviceimpl;
 
-import java.util.Date;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -11,10 +9,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.beratoztas.entities.Address;
 import com.beratoztas.entities.User;
+import com.beratoztas.enums.UserRole;
 import com.beratoztas.exception.BaseException;
 import com.beratoztas.exception.ErrorMessage;
 import com.beratoztas.exception.MessageType;
+import com.beratoztas.repository.AddressRepository;
 import com.beratoztas.repository.UserRepository;
 import com.beratoztas.requests.LoginRequest;
 import com.beratoztas.requests.RefreshTokenRequest;
@@ -28,6 +29,8 @@ import com.beratoztas.service.IAuthenticationService;
 public class AuthenticationServiceImpl implements IAuthenticationService {
 
 	private UserRepository userRepository;
+	
+	private AddressRepository addressRepository;
 
 	private BCryptPasswordEncoder passwordEncoder;
 
@@ -35,9 +38,10 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
 
 	private AuthenticationManager authenticationManager;
 
-	public AuthenticationServiceImpl(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder,
+	public AuthenticationServiceImpl(UserRepository userRepository,AddressRepository addressRepository, BCryptPasswordEncoder passwordEncoder,
 			JwtTokenProvider jwtTokenProvider, AuthenticationManager authenticationManager) {
 		this.userRepository = userRepository;
+		this.addressRepository =addressRepository;
 		this.passwordEncoder = passwordEncoder;
 		this.jwtTokenProvider = jwtTokenProvider;
 		this.authenticationManager = authenticationManager;
@@ -55,6 +59,17 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
 
 		return user;
 	}
+	
+	private void createAddress(User savedUser,RegisterRequest request) {
+		Address address =new Address();
+		address.setUser(savedUser);
+		address.setCity(request.getCity());
+		address.setDistrict(request.getDistrict());
+		address.setNeighborhood(request.getNeighborhood());
+		address.setStreet(request.getStreet());
+		
+		addressRepository.save(address);
+	}
 
 	@Override
 	public ResponseEntity<AuthResponse> register(RegisterRequest request) {
@@ -67,6 +82,10 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
 		AuthResponse authResponse = new AuthResponse();
 
 		User savedUser = userRepository.save(createUser(request));
+		
+		if(savedUser.getUserRole()==UserRole.USER && request.getCity() !=null)
+			createAddress(savedUser, request);
+
 
 		UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(request.getUsername(),
 				request.getPassword());
