@@ -22,11 +22,15 @@ public class UserServiceImpl implements IUserService {
 	public UserServiceImpl(UserRepository userRepository) {
 		this.userRepository = userRepository;
 	}
+	
+	private User findByUserId(Long id) {
+		return userRepository.findById(id)
+				.orElseThrow(() -> new BaseException(new ErrorMessage(MessageType.USER_NOT_FOUND, "User Id : " + id)));
+	}
 
 	@Override
 	public UserResponse getUserById(Long id) {
-		User user = userRepository.findById(id)
-				.orElseThrow(() -> new BaseException(new ErrorMessage(MessageType.USER_NOT_FOUND, "User Id : " + id)));
+		User user = findByUserId(id);
 
 		return new UserResponse(user);
 	}
@@ -34,7 +38,7 @@ public class UserServiceImpl implements IUserService {
 	@Override
 	public List<UserResponse> getAllUsers() {
 		List<User> users = userRepository.findAll();
-		if (users.isEmpty() || users == null) {
+		if (users.isEmpty()) {
 			throw new BaseException(new ErrorMessage(MessageType.USERS_NOT_FOUND, ""));
 		}
 		return users.stream().map(user -> new UserResponse(user)).collect(Collectors.toList());
@@ -42,8 +46,7 @@ public class UserServiceImpl implements IUserService {
 
 	@Override
 	public UserResponse updateUserById(Long id, UpdateUserRequest request) {
-		User user = userRepository.findById(id)
-				.orElseThrow(() -> new BaseException(new ErrorMessage(MessageType.USER_NOT_FOUND, "User Id : " + id)));
+		User user = findByUserId(id);
 
 		user.setFirstName(request.getFirstName());
 		user.setLastName(request.getLastName());
@@ -55,8 +58,7 @@ public class UserServiceImpl implements IUserService {
 
 	@Override
 	public void deleteUserById(Long id) {
-		User user = userRepository.findById(id)
-				.orElseThrow(() -> new BaseException(new ErrorMessage(MessageType.USER_NOT_FOUND, "User Id : " + id)));
+		User user = findByUserId(id);
 
 		userRepository.delete(user);
 
