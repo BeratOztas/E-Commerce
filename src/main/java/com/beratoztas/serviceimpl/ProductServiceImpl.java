@@ -28,7 +28,7 @@ public class ProductServiceImpl implements IProductService {
 		this.categoryRepository =categoryRepository;
 	}
 	
-	private Product setProduct(ProductRequest request,Category category) {
+	private Product updateProductFields(ProductRequest request,Category category) {
 		Product product =new Product();
 		
 		product.setName(request.getName());
@@ -39,11 +39,15 @@ public class ProductServiceImpl implements IProductService {
 		
 		return product;
 	}
+	
+	private Product findByProductId(Long id) {
+		return productRepository.findById(id)
+				.orElseThrow(()-> new BaseException(new ErrorMessage(MessageType.PRODUCT_NOT_FOUND, "Product Id : "+id)));
+	}
 
 	@Override
 	public ProductResponse getProductById(Long id) {
-		Product product =productRepository.findById(id)
-				.orElseThrow(()-> new BaseException(new ErrorMessage(MessageType.PRODUCT_NOT_FOUND, "Product Id : "+id)));
+		Product product =findByProductId(id);
 		
 		return new ProductResponse(product);
  	}
@@ -52,37 +56,34 @@ public class ProductServiceImpl implements IProductService {
 	public List<ProductResponse> getAllProducts() {
 		List<Product> products =productRepository.findAll();
 		
-		if(products ==null || products.isEmpty()) {
+		if(products.isEmpty()) {
 			throw new BaseException(new ErrorMessage(MessageType.PRODUCTS_NOT_FOUND, ""));
 		}
 		return products.stream()
 				.map(product -> new ProductResponse(product)).collect(Collectors.toList());
 	}
-	
 
 	@Override
 	public ProductResponse createProduct(ProductRequest request) {
 		Category category =categoryRepository.findById(request.getCategoryId())
 				.orElseThrow(()-> new BaseException(new ErrorMessage(MessageType.CATEGORY_NOT_FOUND, "Category Id : "+request.getCategoryId())));
 		
-		return new ProductResponse(productRepository.save(setProduct(request, category)));
+		return new ProductResponse(productRepository.save(updateProductFields(request, category)));
 	}
 
 	@Override
 	public ProductResponse updateProductById(Long id, ProductRequest request) {
-		Product product =productRepository.findById(id)
-				.orElseThrow(() -> new BaseException(new ErrorMessage(MessageType.PRODUCT_NOT_FOUND, "Product Id : "+id)));
+		Product product =findByProductId(id);
 		
 		Category category =categoryRepository.
 				findById(request.getCategoryId()).orElseThrow(() ->new BaseException(new ErrorMessage(MessageType.CATEGORY_NOT_FOUND, "Category Id : "+request.getCategoryId())));
 		
-		return new ProductResponse(productRepository.save(setProduct(request, category)));
+		return new ProductResponse(productRepository.save(updateProductFields(request, category)));
 	}
 
 	@Override
 	public void deleteProductById(Long id) {
-		Product product =productRepository.findById(id)
-				.orElseThrow(() -> new BaseException(new ErrorMessage(MessageType.PRODUCT_NOT_FOUND, "Product Id : "+id)));
+		Product product =findByProductId(id);
 		productRepository.delete(product);
 	}
 
