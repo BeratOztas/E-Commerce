@@ -1,6 +1,7 @@
 package com.beratoztas.controller;
 
 import com.beratoztas.requests.LoginRequest;
+import com.beratoztas.requests.LogoutTokenRequest;
 import com.beratoztas.requests.RefreshTokenRequest;
 import com.beratoztas.requests.RegisterRequest;
 import com.beratoztas.responses.AuthResponse;
@@ -13,5 +14,5 @@ public interface IRestAuthenticationController {
 
 	public ApiResponse<AuthResponse> refresh(RefreshTokenRequest request);
 
-	public ApiResponse<?> logout(RefreshTokenRequest request);
+	public ApiResponse<?> logout(LogoutTokenRequest request);
 }

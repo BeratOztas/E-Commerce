@@ -2,8 +2,6 @@ package com.beratoztas.controller;
 
 import java.util.List;
 
-import org.springframework.http.ResponseEntity;
-
 import com.beratoztas.requests.UpdateUserRequest;
 import com.beratoztas.responses.UserResponse;
 import com.beratoztas.security.JwtUserDetails;

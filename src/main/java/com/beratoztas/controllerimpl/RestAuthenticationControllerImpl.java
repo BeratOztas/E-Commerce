@@ -1,6 +1,5 @@
 package com.beratoztas.controllerimpl;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,10 +9,10 @@ import com.beratoztas.controller.ApiResponse;
 import com.beratoztas.controller.IRestAuthenticationController;
 import com.beratoztas.controller.RestBaseController;
 import com.beratoztas.requests.LoginRequest;
+import com.beratoztas.requests.LogoutTokenRequest;
 import com.beratoztas.requests.RefreshTokenRequest;
 import com.beratoztas.requests.RegisterRequest;
 import com.beratoztas.responses.AuthResponse;
-import com.beratoztas.responses.UserResponse;
 import com.beratoztas.service.IAuthenticationService;
 
 import jakarta.validation.Valid;
@@ -48,9 +47,9 @@ public class RestAuthenticationControllerImpl extends RestBaseController  implem
 
 	@Override
 	@PostMapping("/logout")
-	public ApiResponse<?> logout(@RequestBody RefreshTokenRequest request) {
+	public ApiResponse<?> logout(@RequestBody LogoutTokenRequest request) {
 		authenticationService.logout(request);
-		return ApiResponse.ok("Logged out!");
+		return ApiResponse.ok("Logged out successfully.!");
 	}
 
 }
