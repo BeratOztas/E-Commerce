@@ -49,5 +49,9 @@ public class Order extends BaseEntity {
 	@JoinColumn(name = "user_id")
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private User user;
+	
+	@ManyToOne
+	@JoinColumn(name = "address_id")
+	private Address address;
 
 }
