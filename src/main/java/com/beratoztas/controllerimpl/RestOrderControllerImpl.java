@@ -1,10 +1,7 @@
 package com.beratoztas.controllerimpl;
 
-import java.lang.annotation.Retention;
 import java.util.List;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,8 +12,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.beratoztas.controller.ApiResponse;
 import com.beratoztas.controller.IRestOrderController;
-import com.beratoztas.enums.CartStatus;
+import com.beratoztas.controller.RestBaseController;
 import com.beratoztas.requests.CreateOrderRequest;
 import com.beratoztas.requests.OrderStatusUpdateRequest;
 import com.beratoztas.responses.OrderResponse;
@@ -27,7 +25,7 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/orders")
-public class RestOrderControllerImpl implements IRestOrderController {
+public class RestOrderControllerImpl extends RestBaseController implements IRestOrderController {
 	
 	private IOrderService orderService;
 	
@@ -38,36 +36,36 @@ public class RestOrderControllerImpl implements IRestOrderController {
 	@GetMapping("/{orderId}")
 	@PreAuthorize("hasRole('USER')or ('ADMIN')")
 	@Override
-	public ResponseEntity<OrderResponse> getOrderById(@PathVariable Long orderId,@AuthenticationPrincipal JwtUserDetails userDetails) {
-		return ResponseEntity.ok(orderService.getOrderById(orderId, userDetails));
+	public ApiResponse<OrderResponse> getOrderById(@PathVariable Long orderId,@AuthenticationPrincipal JwtUserDetails userDetails) {
+		return ok(orderService.getOrderById(orderId, userDetails));
 	}
 
 	@GetMapping("/me")
 	@PreAuthorize("hasRole('USER')")
 	@Override
-	public ResponseEntity<List<OrderResponse>> getMyOrders(@AuthenticationPrincipal JwtUserDetails userDetails) {
-		return ResponseEntity.ok(orderService.getMyOrders(userDetails));
+	public ApiResponse<List<OrderResponse>> getMyOrders(@AuthenticationPrincipal JwtUserDetails userDetails) {
+		return ok(orderService.getMyOrders(userDetails));
 	}
 
 	@GetMapping
 	@PreAuthorize("hasRole('ADMIN')")
 	@Override
-	public ResponseEntity<List<OrderResponse>> getAllOrders() {
-		return ResponseEntity.ok(orderService.getAllOrders());
+	public ApiResponse<List<OrderResponse>> getAllOrders() {
+		return ok(orderService.getAllOrders());
 	}
 
 	@PostMapping
 	@PreAuthorize("hasRole('USER')")
 	@Override
-	public ResponseEntity<OrderResponse> createOrderFromCart(@AuthenticationPrincipal JwtUserDetails userDetails,@RequestBody @Valid CreateOrderRequest request) {
-		return ResponseEntity.status(HttpStatus.CREATED).body(orderService.createOrderFromCart(userDetails, request));
+	public ApiResponse<OrderResponse> createOrderFromCart(@AuthenticationPrincipal JwtUserDetails userDetails,@RequestBody @Valid CreateOrderRequest request) {
+		return ok(orderService.createOrderFromCart(userDetails, request));
 	}
 
 	@PutMapping("/{orderId}/status")
 	@PreAuthorize("hasRole('ADMIN')")
 	@Override
-	public ResponseEntity<OrderResponse> updateOrderStatus(@PathVariable Long orderId,@RequestBody @Valid OrderStatusUpdateRequest newStatus) {
-		return ResponseEntity.ok(orderService.updateOrderStatus(orderId, newStatus));
+	public ApiResponse<OrderResponse> updateOrderStatus(@PathVariable Long orderId,@RequestBody @Valid OrderStatusUpdateRequest newStatus) {
+		return ok(orderService.updateOrderStatus(orderId, newStatus));
 	}
 
 }

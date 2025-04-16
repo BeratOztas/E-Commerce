@@ -2,9 +2,6 @@ package com.beratoztas.controllerimpl;
 
 import java.util.List;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.beratoztas.controller.ApiResponse;
 import com.beratoztas.controller.IRestCategoryController;
+import com.beratoztas.controller.RestBaseController;
 import com.beratoztas.requests.CategoryRequest;
 import com.beratoztas.responses.CategoryResponse;
 import com.beratoztas.service.ICategoryService;
@@ -24,7 +23,7 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/categories")
-public class RestCategoryControllerImpl implements IRestCategoryController {
+public class RestCategoryControllerImpl extends RestBaseController implements IRestCategoryController {
 
 	private ICategoryService categoryService;
 	
@@ -34,36 +33,36 @@ public class RestCategoryControllerImpl implements IRestCategoryController {
 
 	@GetMapping("/{id}")
 	@Override
-	public ResponseEntity<CategoryResponse> getCategoryById(@PathVariable(name = "id") Long id) {
-		return ResponseEntity.ok(categoryService.getCategoryById(id));
+	public ApiResponse<CategoryResponse> getCategoryById(@PathVariable(name = "id") Long id) {
+		return ok(categoryService.getCategoryById(id));
 	}
 
 	@GetMapping
 	@Override
-	public ResponseEntity<List<CategoryResponse>> getAllCategories() {
-		return ResponseEntity.ok(categoryService.getAllCategories());
+	public ApiResponse<List<CategoryResponse>> getAllCategories() {
+		return ok(categoryService.getAllCategories());
 	}
 
 	@PostMapping
 	@PreAuthorize("hasRole('ADMIN')")
 	@Override
-	public ResponseEntity<CategoryResponse> createCategory(@RequestBody @Valid CategoryRequest request) {
-		return ResponseEntity.status(HttpStatus.CREATED).body(categoryService.createCategory(request));
+	public ApiResponse<CategoryResponse> createCategory(@RequestBody @Valid CategoryRequest request) {
+		return ok(categoryService.createCategory(request));
 	}
 
 	@PutMapping("/{id}")
 	@Override
 	@PreAuthorize("hasRole('ADMIN')")
-	public ResponseEntity<CategoryResponse> updateCategoryById(@PathVariable(name = "id") Long id,@RequestBody @Valid CategoryRequest request) {
-		return ResponseEntity.ok(categoryService.updateCategoryById(id, request));
+	public ApiResponse<CategoryResponse> updateCategoryById(@PathVariable(name = "id") Long id,@RequestBody @Valid CategoryRequest request) {
+		return ok(categoryService.updateCategoryById(id, request));
 	}
 
 	@DeleteMapping("/{id}")
 	@PreAuthorize("hasRole('ADMIN')")
 	@Override
-	public ResponseEntity<?> deleteCategoryById(@PathVariable Long id) {
+	public ApiResponse<?> deleteCategoryById(@PathVariable Long id) {
 		categoryService.deleteCategoryById(id);
-		return ResponseEntity.ok("Category Deleted.");
+		return ApiResponse.ok("Category Deleted.");
 	}
 
 }

@@ -74,7 +74,7 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
 	}
 
 	@Override
-	public ResponseEntity<AuthResponse> register(RegisterRequest request) {
+	public AuthResponse register(RegisterRequest request) {
 		if (userRepository.findByUsername(request.getUsername()) != null) {
 			throw new BaseException(new ErrorMessage(MessageType.USERNAME_ALREADY_EXIST, request.getUsername()));
 		}
@@ -103,7 +103,7 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
 		authResponse.setUserId(savedUser.getId());
 		authResponse.setAccessToken(jwtToken);
 
-		return new ResponseEntity<AuthResponse>(authResponse, HttpStatus.CREATED);
+		return  authResponse;
 	}
 
 	@Override

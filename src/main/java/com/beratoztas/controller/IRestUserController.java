@@ -10,17 +10,17 @@ import com.beratoztas.security.JwtUserDetails;
 
 public interface IRestUserController {
 
-	public ResponseEntity<UserResponse> getMe(JwtUserDetails userDetails);
+	public ApiResponse<UserResponse> getMe(JwtUserDetails userDetails);
 
-	public ResponseEntity<UserResponse> getUserById(Long id);
+	public ApiResponse<UserResponse> getUserById(Long id);
 
-	public ResponseEntity<List<UserResponse>> getAllUsers();
+	public ApiResponse<List<UserResponse>> getAllUsers();
 
-	public ResponseEntity<UserResponse> updateMe(JwtUserDetails userDetails, UpdateUserRequest request);
+	public ApiResponse<UserResponse> updateMe(JwtUserDetails userDetails, UpdateUserRequest request);
 
-	public ResponseEntity<UserResponse> updateUserById(Long id, UpdateUserRequest request);
+	public ApiResponse<UserResponse> updateUserById(Long id, UpdateUserRequest request);
 
-	public ResponseEntity<?> deleteMe(JwtUserDetails userDetails);
+	public ApiResponse<?> deleteMe(JwtUserDetails userDetails);
 
-	public ResponseEntity<?> deleteUserById(Long id);
+	public ApiResponse<?> deleteUserById(Long id);
 }
