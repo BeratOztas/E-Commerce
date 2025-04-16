@@ -29,7 +29,7 @@ import com.beratoztas.service.IAuthenticationService;
 public class AuthenticationServiceImpl implements IAuthenticationService {
 
 	private UserRepository userRepository;
-	
+
 	private AddressRepository addressRepository;
 
 	private BCryptPasswordEncoder passwordEncoder;
@@ -38,10 +38,11 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
 
 	private AuthenticationManager authenticationManager;
 
-	public AuthenticationServiceImpl(UserRepository userRepository,AddressRepository addressRepository, BCryptPasswordEncoder passwordEncoder,
-			JwtTokenProvider jwtTokenProvider, AuthenticationManager authenticationManager) {
+	public AuthenticationServiceImpl(UserRepository userRepository, AddressRepository addressRepository,
+			BCryptPasswordEncoder passwordEncoder, JwtTokenProvider jwtTokenProvider,
+			AuthenticationManager authenticationManager) {
 		this.userRepository = userRepository;
-		this.addressRepository =addressRepository;
+		this.addressRepository = addressRepository;
 		this.passwordEncoder = passwordEncoder;
 		this.jwtTokenProvider = jwtTokenProvider;
 		this.authenticationManager = authenticationManager;
@@ -59,15 +60,16 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
 
 		return user;
 	}
-	
-	private void createAddress(User savedUser,RegisterRequest request) {
-		Address address =new Address();
+
+	private void createAddress(User savedUser, RegisterRequest request) {
+		Address address = new Address();
+
 		address.setUser(savedUser);
 		address.setCity(request.getCity());
 		address.setDistrict(request.getDistrict());
 		address.setNeighborhood(request.getNeighborhood());
 		address.setStreet(request.getStreet());
-		
+
 		addressRepository.save(address);
 	}
 
@@ -82,10 +84,9 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
 		AuthResponse authResponse = new AuthResponse();
 
 		User savedUser = userRepository.save(createUser(request));
-		
-		if(savedUser.getUserRole()==UserRole.USER && request.getCity() !=null)
-			createAddress(savedUser, request);
 
+		if (savedUser.getUserRole() == UserRole.USER && request.getCity() != null)
+			createAddress(savedUser, request);
 
 		UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(request.getUsername(),
 				request.getPassword());
@@ -130,7 +131,6 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
 			return authResponse;
 
 		} catch (Exception e) {
-			// TODO: THROW USERNAME_OR_PASSWORD_INVALID EXCEPTION
 			throw new BaseException(new ErrorMessage(MessageType.USERNAME_OR_PASSWORD_INVALID, e.getMessage()));
 		}
 	}
