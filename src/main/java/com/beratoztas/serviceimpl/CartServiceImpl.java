@@ -44,7 +44,7 @@ public class CartServiceImpl implements ICartService {
 		User user = userRepository.findById(userId).orElseThrow(
 				() -> new BaseException(new ErrorMessage(MessageType.USER_NOT_FOUND, "User Id : " + userId)));
 
-		return cartRepository.findByUser(user).orElseGet(() -> {
+		return cartRepository.findByUserAndStatus(user, CartStatus.ACTIVE).orElseGet(() -> {
 			Cart savedCart = new Cart();
 			savedCart.setUser(user);
 			savedCart.setStatus(CartStatus.ACTIVE);
@@ -53,14 +53,30 @@ public class CartServiceImpl implements ICartService {
 
 	}
 
+	private User getUserById(Long userId) {
+		return userRepository.findById(userId).orElseThrow(
+				() -> new BaseException(new ErrorMessage(MessageType.USER_NOT_FOUND, "User Id : " + userId)));
+	}
+
+	private void checkIfUser(JwtUserDetails userDetails) {
+		boolean isUser = userDetails.getAuthorities().stream()
+				.anyMatch(auth -> auth.getAuthority().equals("ROLE_USER"));
+
+		if (!isUser) {
+			throw new BaseException(new ErrorMessage(MessageType.UNAUTHORIZED, "Only users can perform this action."));
+		}
+	}
+
 	@Override
 	public CartResponse getMyCart(JwtUserDetails userDetails) {
+		checkIfUser(userDetails);
 		Cart cart = getOrCreateCart(userDetails.getId());
 		return new CartResponse(cart);
 	}
 
 	@Override
 	public CartResponse addItemToCart(JwtUserDetails userDetails, AddCartItemRequest request) {
+		checkIfUser(userDetails);
 		Cart cart = getOrCreateCart(userDetails.getId());
 		Product product = productRepository.findById(request.getProductId()).orElseThrow(() -> new BaseException(
 				new ErrorMessage(MessageType.PRODUCT_NOT_FOUND, "Product Id : " + request.getProductId())));
@@ -91,9 +107,8 @@ public class CartServiceImpl implements ICartService {
 	@Override
 	public CartResponse updateCartItemQuantity(JwtUserDetails userDetails, Long cartItemId,
 			UpdateCartItemRequest request) {
-
-		User user = userRepository.findById(userDetails.getId()).orElseThrow(() -> new BaseException(
-				new ErrorMessage(MessageType.USER_NOT_FOUND, "User Id : " + userDetails.getId())));
+		checkIfUser(userDetails);
+		User user = getUserById(userDetails.getId());
 		CartItem item = cartItemRepository.findById(cartItemId).orElseThrow(() -> new BaseException(
 				new ErrorMessage(MessageType.CART_ITEM_NOT_FOUND, "CartItem Id : " + cartItemId)));
 
@@ -122,8 +137,8 @@ public class CartServiceImpl implements ICartService {
 
 	@Override
 	public void removeCartItem(JwtUserDetails userDetails, Long cartItemId) {
-		User user = userRepository.findById(userDetails.getId()).orElseThrow(() -> new BaseException(
-				new ErrorMessage(MessageType.USER_NOT_FOUND, "User Id : " + userDetails.getId())));
+		checkIfUser(userDetails);
+		User user = getUserById(userDetails.getId());
 		CartItem item = cartItemRepository.findById(cartItemId).orElseThrow(() -> new BaseException(
 				new ErrorMessage(MessageType.CART_ITEM_NOT_FOUND, "CartItem Id : " + cartItemId)));
 
@@ -140,6 +155,7 @@ public class CartServiceImpl implements ICartService {
 
 	@Override
 	public void clearCart(JwtUserDetails userDetails) {
+		checkIfUser(userDetails);
 		Cart cart = getOrCreateCart(userDetails.getId());
 		cart.getCartItems().clear();
 		cartRepository.save(cart);
