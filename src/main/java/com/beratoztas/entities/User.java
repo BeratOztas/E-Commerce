@@ -1,11 +1,6 @@
 package com.beratoztas.entities;
 
-import java.util.Collection;
 import java.util.List;
-
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import com.beratoztas.enums.UserRole;
 
@@ -15,7 +10,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -52,8 +46,8 @@ public class User extends BaseEntity {
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	private List<Order> orders;
 
-	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-	private Cart cart;
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	private List<Cart> carts;
 	
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Address> addresses;
