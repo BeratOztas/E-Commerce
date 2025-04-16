@@ -22,11 +22,16 @@ public class CategoryServiceImpl implements ICategoryService {
 	public CategoryServiceImpl(CategoryRepository categoryRepository) {
 		this.categoryRepository = categoryRepository;
 	}
+	
+	private Category findCategoryById(Long id) {
+	    return categoryRepository.findById(id)
+	        .orElseThrow(() -> new BaseException(
+	            new ErrorMessage(MessageType.CATEGORY_NOT_FOUND, "Category Id : " + id)));
+	}
 
 	@Override
 	public CategoryResponse getCategoryById(Long id) {
-		Category category = categoryRepository.findById(id).orElseThrow(
-				() -> new BaseException(new ErrorMessage(MessageType.CATEGORY_NOT_FOUND, "Category Id : " + id)));
+		Category category = findCategoryById(id);
 
 		return new CategoryResponse(category);
 	}
@@ -34,7 +39,7 @@ public class CategoryServiceImpl implements ICategoryService {
 	@Override
 	public List<CategoryResponse> getAllCategories() {
 		List<Category> categories = categoryRepository.findAll();
-		if (categories == null || categories.isEmpty()) {
+		if (categories.isEmpty()) {
 			throw new BaseException(new ErrorMessage(MessageType.CATEGORIES_NOT_FOUND, ""));
 		}
 		return categories.stream().map(category -> new CategoryResponse(category)).collect(Collectors.toList());
@@ -49,8 +54,7 @@ public class CategoryServiceImpl implements ICategoryService {
 
 	@Override
 	public CategoryResponse updateCategoryById(Long id, CategoryRequest request) {
-		Category category = categoryRepository.findById(id).orElseThrow(
-				() -> new BaseException(new ErrorMessage(MessageType.CATEGORY_NOT_FOUND, "Category Id : " + id)));
+		Category category = findCategoryById(id);
 
 		category.setName(request.getName());
 
@@ -60,8 +64,7 @@ public class CategoryServiceImpl implements ICategoryService {
 
 	@Override
 	public void deleteCategoryById(Long id) {
-		Category category = categoryRepository.findById(id).orElseThrow(
-				() -> new BaseException(new ErrorMessage(MessageType.CATEGORY_NOT_FOUND, "Category Id : " + id)));
+		Category category = findCategoryById(id);
 
 		categoryRepository.delete(category);
 	}
