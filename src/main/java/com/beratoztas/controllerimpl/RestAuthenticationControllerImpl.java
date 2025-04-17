@@ -1,5 +1,8 @@
 package com.beratoztas.controllerimpl;
 
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +17,7 @@ import com.beratoztas.requests.RefreshTokenRequest;
 import com.beratoztas.requests.RegisterRequest;
 import com.beratoztas.responses.AuthResponse;
 import com.beratoztas.service.IAuthenticationService;
+import com.beratoztas.utils.CookieUtil;
 
 import jakarta.validation.Valid;
 
@@ -29,27 +33,39 @@ public class RestAuthenticationControllerImpl extends RestBaseController  implem
 
 	@Override
 	@PostMapping("/register")
-	public ApiResponse<AuthResponse> register(@RequestBody @Valid RegisterRequest request) {
-		return ok(authenticationService.register(request));
+	public ResponseEntity<ApiResponse<AuthResponse>> register(@RequestBody @Valid RegisterRequest request) {
+		AuthResponse response =authenticationService.register(request);
+		ResponseCookie accessTokenCookie =CookieUtil.createAccessTokenCookie(response.getAccessToken());
+		
+		return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, accessTokenCookie.toString())
+				.body(ApiResponse.ok(response));
 	}
 
 	@Override
 	@PostMapping("/login")
-	public ApiResponse<AuthResponse> login(@RequestBody @Valid LoginRequest request) {
-		return ok(authenticationService.login(request));
+	public ResponseEntity<ApiResponse<AuthResponse>> login(@RequestBody @Valid LoginRequest request) {
+		AuthResponse response =authenticationService.login(request);
+		ResponseCookie accessTokenCookie =CookieUtil.createAccessTokenCookie(response.getAccessToken());
+		return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, accessTokenCookie.toString())
+				.body(ApiResponse.ok(response));
 	}
 
 	@Override
 	@PostMapping("/refresh")
-	public ApiResponse<AuthResponse> refresh(@RequestBody @Valid RefreshTokenRequest request) {
-		return ok(authenticationService.refresh(request));
+	public ResponseEntity<ApiResponse<AuthResponse>> refresh(@RequestBody @Valid RefreshTokenRequest request) {
+		AuthResponse response =authenticationService.refresh(request);
+		ResponseCookie accessTokenCookie =CookieUtil.createAccessTokenCookie(response.getAccessToken());
+		return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, accessTokenCookie.toString())
+				.body(ApiResponse.ok(response));
 	}
 
 	@Override
 	@PostMapping("/logout")
-	public ApiResponse<?> logout(@RequestBody LogoutTokenRequest request) {
+	public ResponseEntity<ApiResponse<?>> logout(@RequestBody LogoutTokenRequest request) {
 		authenticationService.logout(request);
-		return ApiResponse.ok("Logged out successfully.!");
+		ResponseCookie clearedCookie =CookieUtil.clearAccessTokenCookie();
+		return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, clearedCookie.toString())
+				.body(ApiResponse.ok("Logged out succesfully.!"));
 	}
 
 }
