@@ -176,7 +176,7 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
 		
 		response.setUserId(userId);
 		response.setMessage(message);
-		response.setAccessToken("Bearer " + accessToken);
+		response.setAccessToken(accessToken);
 		response.setRefreshToken(refreshToken);
 		
 		return response;

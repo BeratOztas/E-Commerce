@@ -46,7 +46,7 @@ public class SecurityConfig  {
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
 		// Şu an için tüm isteklere izin veriyoruz
-		httpSecurity.csrf(csrf -> csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
+		httpSecurity.csrf().disable()
 				.authorizeHttpRequests(authz -> authz.anyRequest().permitAll())	
 				.exceptionHandling(ex ->ex.authenticationEntryPoint(handler))
 				.sessionManagement(sess ->sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS));

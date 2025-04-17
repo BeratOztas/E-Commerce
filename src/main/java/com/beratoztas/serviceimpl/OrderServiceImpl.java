@@ -22,6 +22,8 @@ import com.beratoztas.enums.OrderStatus;
 import com.beratoztas.exception.BaseException;
 import com.beratoztas.exception.ErrorMessage;
 import com.beratoztas.exception.MessageType;
+import com.beratoztas.message.OrderCreatedEvent;
+import com.beratoztas.message.OrderProducer;
 import com.beratoztas.repository.AddressRepository;
 import com.beratoztas.repository.CartItemRepository;
 import com.beratoztas.repository.CartRepository;
@@ -44,12 +46,15 @@ public class OrderServiceImpl implements IOrderService {
 	private UserRepository userRepository;
 	private AddressRepository addressRepository;
 	
+	private OrderProducer orderProducer;
+	
 	public OrderServiceImpl(OrderRepository orderRepository, CartRepository cartRepository,
-			CartItemRepository cartItemRepository, UserRepository userRepository, AddressRepository addressRepository) {
+			CartItemRepository cartItemRepository, UserRepository userRepository, AddressRepository addressRepository,OrderProducer orderProducer) {
 		this.orderRepository = orderRepository;
 		this.cartRepository = cartRepository;
 		this.userRepository = userRepository;
 		this.addressRepository = addressRepository;
+		this.orderProducer =orderProducer;
 	}
 
 	@Override
@@ -99,7 +104,10 @@ public class OrderServiceImpl implements IOrderService {
 
 		finalizeCart(cart, user);
 		
-		return new OrderResponse(order);
+		OrderResponse orderResponse =new OrderResponse(order);
+		orderProducer.sendOrderCreatedEvent(new OrderCreatedEvent(orderResponse));
+		
+		return orderResponse;
 	}
 	
 	@Override

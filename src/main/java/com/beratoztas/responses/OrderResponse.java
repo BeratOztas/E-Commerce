@@ -21,6 +21,7 @@ public class OrderResponse extends BaseDto {
     private BigDecimal totalPrice;
     private OrderStatus status;
     private List<OrderItemResponse> items;
+    private UserResponse user;
 
     public OrderResponse(Order order) {
         this.setId(order.getId());
@@ -30,5 +31,6 @@ public class OrderResponse extends BaseDto {
         this.items = order.getOrderItems().stream()
                           .map(orderItem -> new OrderItemResponse(orderItem))
                           .collect(Collectors.toList());
+        this.user=new UserResponse(order.getUser());
     }
 }
