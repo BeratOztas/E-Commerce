@@ -54,31 +54,6 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
 		this.refreshTokenService = refreshTokenService;
 	}
 
-	private User createUser(RegisterRequest request) {
-		User user = new User();
-
-		user.setUsername(request.getUsername());
-		user.setPassword(passwordEncoder.encode(request.getPassword()));
-		user.setUserRole(request.getUserRole());
-		user.setFirstName(request.getFirstName());
-		user.setLastName(request.getLastName());
-		user.setEmail(request.getEmail());
-
-		return user;
-	}
-
-	private void createAddress(User savedUser, RegisterRequest request) {
-		Address address = new Address();
-
-		address.setUser(savedUser);
-		address.setCity(request.getCity());
-		address.setDistrict(request.getDistrict());
-		address.setNeighborhood(request.getNeighborhood());
-		address.setStreet(request.getStreet());
-
-		addressRepository.save(address);
-	}
-
 	@Override
 	public AuthResponse register(RegisterRequest request) {
 		if (userRepository.findByUsername(request.getUsername()) != null) {
@@ -87,44 +62,29 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
 		if (userRepository.findByEmail(request.getEmail()) != null) {
 			throw new BaseException(new ErrorMessage(MessageType.EMAIL_ALREADY_EXIST, request.getEmail()));
 		}
-		AuthResponse authResponse = new AuthResponse();
 
 		User savedUser = userRepository.save(createUser(request));
 
 		if (savedUser.getUserRole() == UserRole.USER && request.getCity() != null)
-			createAddress(savedUser, request);
+			saveAddress(savedUser, request);
 
-		UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(request.getUsername(),
-				request.getPassword());
-
-		Authentication auth = authenticationManager.authenticate(authToken);
-
-		SecurityContextHolder.getContext().setAuthentication(auth);
+		authenticateUser(request.getUsername(), request.getPassword());
 
 		JwtUserDetails userDetails = JwtUserDetails.create(savedUser);
 
-		String jwtToken = jwtTokenProvider.generateJwtToken(userDetails);
+		String accessToken = jwtTokenProvider.generateJwtToken(userDetails);
 		String refreshToken = refreshTokenService.generateRefreshToken();
 
 		refreshTokenService.saveRefreshToken(savedUser.getId(), refreshToken);
 
-		authResponse.setMessage("User registered succesfully!!.");
-		authResponse.setUserId(savedUser.getId());
-		authResponse.setAccessToken("Bearer " + jwtToken);
-		authResponse.setRefreshToken(refreshToken);
+		return buildAuthResponse(savedUser.getId(), accessToken, refreshToken, "User registered successfully!");
 
-		return authResponse;
 	}
 
 	@Override
 	public AuthResponse login(LoginRequest request) {
 		try {
-			UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-					request.getUsername(), request.getPassword());
-
-			Authentication auth = authenticationManager.authenticate(authToken);
-
-			SecurityContextHolder.getContext().setAuthentication(auth);
+			authenticateUser(request.getUsername(), request.getPassword());
 
 			User user = userRepository.findByUsername(request.getUsername());
 
@@ -135,14 +95,7 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
 
 			refreshTokenService.saveRefreshToken(user.getId(), refreshToken);
 
-			AuthResponse authResponse = new AuthResponse();
-
-			authResponse.setMessage("User logined succesfully !!.");
-			authResponse.setUserId(user.getId());
-			authResponse.setAccessToken("Bearer " + accessToken);
-			authResponse.setRefreshToken(refreshToken);
-
-			return authResponse;
+			return buildAuthResponse(user.getId(), accessToken, refreshToken, "User logged in successfully!");
 
 		} catch (Exception e) {
 			throw new BaseException(new ErrorMessage(MessageType.USERNAME_OR_PASSWORD_INVALID, e.getMessage()));
@@ -151,18 +104,18 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
 
 	@Override
 	public AuthResponse refresh(RefreshTokenRequest request) {
-		String refreshToken = request.getRefreshToken();
+		String oldRefreshToken = request.getRefreshToken();
 
-		if (!refreshTokenService.isValidRefreshToken(refreshToken)) {
+		if (!refreshTokenService.isValidRefreshToken(oldRefreshToken)) {
 			throw new BaseException(
 					new ErrorMessage(MessageType.INVALID_REFRESH_TOKEN, "Refresh token is not valid or expired."));
 		}
 
-		Long userId = refreshTokenService.getUserIdFromRefreshToken(refreshToken);
+		Long userId = refreshTokenService.getUserIdFromRefreshToken(oldRefreshToken);
 		User user = userRepository.findById(userId).orElseThrow(
 				() -> new BaseException(new ErrorMessage(MessageType.USER_NOT_FOUND, "User Id : " + userId)));
 
-		refreshTokenService.deleteRefreshToken(refreshToken);
+		refreshTokenService.deleteRefreshToken(oldRefreshToken);
 
 		JwtUserDetails userDetails = JwtUserDetails.create(user);
 
@@ -171,14 +124,7 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
 
 		refreshTokenService.saveRefreshToken(userId, newRefreshToken);
 
-		AuthResponse authResponse = new AuthResponse();
-
-		authResponse.setMessage("Token succesfully refreshed.!");
-		authResponse.setUserId(user.getId());
-		authResponse.setAccessToken(accessToken);
-		authResponse.setRefreshToken(newRefreshToken);
-
-		return authResponse;
+		return buildAuthResponse(user.getId(), accessToken, newRefreshToken, "Token refreshed successfully!");
 	}
 
 	@Override
@@ -191,5 +137,49 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
 
 		refreshTokenService.deleteRefreshToken(refreshToken);
 	}
+	
+	
+	private User createUser(RegisterRequest request) {
+		User user = new User();
 
+		user.setUsername(request.getUsername());
+		user.setPassword(passwordEncoder.encode(request.getPassword()));
+		user.setUserRole(request.getUserRole());
+		user.setFirstName(request.getFirstName());
+		user.setLastName(request.getLastName());
+		user.setEmail(request.getEmail());
+
+		return user;
+	}
+	
+	private void saveAddress(User savedUser, RegisterRequest request) {
+		Address address = new Address();
+
+		address.setUser(savedUser);
+		address.setCity(request.getCity());
+		address.setDistrict(request.getDistrict());
+		address.setNeighborhood(request.getNeighborhood());
+		address.setStreet(request.getStreet());
+
+		addressRepository.save(address);
+	}
+	
+	private void authenticateUser(String username, String password) {
+		Authentication authentication = authenticationManager.authenticate(
+				new UsernamePasswordAuthenticationToken(username, password));
+		
+		SecurityContextHolder.getContext().setAuthentication(authentication);
+	}
+	
+	private AuthResponse buildAuthResponse(Long userId, String accessToken, String refreshToken, String message) {
+		AuthResponse response = new AuthResponse();
+		
+		response.setUserId(userId);
+		response.setMessage(message);
+		response.setAccessToken("Bearer " + accessToken);
+		response.setRefreshToken(refreshToken);
+		
+		return response;
+	}
+	
 }
