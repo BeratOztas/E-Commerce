@@ -1,15 +1,15 @@
 package com.beratoztas.service;
 
-import java.util.List;
-
 import com.beratoztas.requests.CategoryRequest;
+import com.beratoztas.requests.RestPageRequest;
 import com.beratoztas.responses.CategoryResponse;
+import com.beratoztas.responses.PageResponse;
 
 public interface ICategoryService {
 
 	public CategoryResponse getCategoryById(Long id);
 	
-	public List<CategoryResponse> getAllCategories();
+	public PageResponse<CategoryResponse> getAllCategories(RestPageRequest request);
 	
 	public CategoryResponse createCategory(CategoryRequest request);
 	

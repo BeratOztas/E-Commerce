@@ -3,6 +3,8 @@ package com.beratoztas.service.impl;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.beratoztas.entities.Category;
@@ -11,8 +13,11 @@ import com.beratoztas.exception.ErrorMessage;
 import com.beratoztas.exception.MessageType;
 import com.beratoztas.repository.CategoryRepository;
 import com.beratoztas.requests.CategoryRequest;
+import com.beratoztas.requests.RestPageRequest;
 import com.beratoztas.responses.CategoryResponse;
+import com.beratoztas.responses.PageResponse;
 import com.beratoztas.service.ICategoryService;
+import com.beratoztas.utils.PageUtil;
 
 @Service
 public class CategoryServiceImpl implements ICategoryService {
@@ -37,12 +42,19 @@ public class CategoryServiceImpl implements ICategoryService {
 	}
 
 	@Override
-	public List<CategoryResponse> getAllCategories() {
-		List<Category> categories = categoryRepository.findAll();
-		if (categories.isEmpty()) {
+	public PageResponse<CategoryResponse> getAllCategories(RestPageRequest  request) {
+		Pageable pageable = PageUtil.toPageable(request);
+		Page<Category> page =categoryRepository.findAll(pageable);
+		
+		if (page.isEmpty()) {
 			throw new BaseException(new ErrorMessage(MessageType.CATEGORIES_NOT_FOUND, ""));
 		}
-		return categories.stream().map(category -> new CategoryResponse(category)).collect(Collectors.toList());
+		List<CategoryResponse> content =page.getContent()
+				.stream()
+				.map(CategoryResponse::new)
+				.collect(Collectors.toList());
+		
+		return PageUtil.toPageResponse(page, content);
 	}
 
 	@Override

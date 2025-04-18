@@ -16,7 +16,9 @@ import com.beratoztas.controller.ApiResponse;
 import com.beratoztas.controller.IRestCategoryController;
 import com.beratoztas.controller.RestBaseController;
 import com.beratoztas.requests.CategoryRequest;
+import com.beratoztas.requests.RestPageRequest;
 import com.beratoztas.responses.CategoryResponse;
+import com.beratoztas.responses.PageResponse;
 import com.beratoztas.service.ICategoryService;
 
 import jakarta.validation.Valid;
@@ -39,8 +41,8 @@ public class RestCategoryControllerImpl extends RestBaseController implements IR
 
 	@GetMapping
 	@Override
-	public ApiResponse<List<CategoryResponse>> getAllCategories() {
-		return ok(categoryService.getAllCategories());
+	public ApiResponse<PageResponse<CategoryResponse>> getAllCategories(RestPageRequest request) {
+		return ok(categoryService.getAllCategories(request));
 	}
 
 	@PostMapping
