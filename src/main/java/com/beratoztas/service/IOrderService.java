@@ -1,7 +1,5 @@
 package com.beratoztas.service;
 
-import java.util.List;
-
 import com.beratoztas.requests.CreateOrderRequest;
 import com.beratoztas.requests.OrderStatusUpdateRequest;
 import com.beratoztas.requests.RestPageRequest;
@@ -13,7 +11,7 @@ public interface IOrderService {
 
 	public OrderResponse getOrderById(Long orderId,JwtUserDetails userDetails);
 	
-	public List<OrderResponse> getMyOrders(JwtUserDetails userDetails);
+	public PageResponse<OrderResponse> getMyOrders(JwtUserDetails userDetails,RestPageRequest request);
 	
 	public PageResponse<OrderResponse> getAllOrders(RestPageRequest request);
 	
