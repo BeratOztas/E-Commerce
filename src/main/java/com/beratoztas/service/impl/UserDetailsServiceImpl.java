@@ -1,4 +1,4 @@
-package com.beratoztas.serviceimpl;
+package com.beratoztas.service.impl;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.beratoztas.serviceimpl.UserDetailsServiceImpl;
+import com.beratoztas.service.impl.UserDetailsServiceImpl;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;

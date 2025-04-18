@@ -3,6 +3,10 @@ package com.beratoztas.message;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Component;
 
+import com.beratoztas.message.config.RabbitMQConfig;
+import com.beratoztas.message.event.OrderCreatedEvent;
+import com.beratoztas.message.event.OrderStatusChangedEvent;
+
 @Component
 public class OrderProducer {
 

@@ -1,4 +1,4 @@
-package com.beratoztas.message;
+package com.beratoztas.message.config;
 
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;

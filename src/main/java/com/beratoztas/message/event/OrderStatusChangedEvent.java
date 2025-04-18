@@ -1,4 +1,4 @@
-package com.beratoztas.message;
+package com.beratoztas.message.event;
 
 import com.beratoztas.enums.OrderStatus;
 

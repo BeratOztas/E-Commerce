@@ -1,4 +1,4 @@
-package com.beratoztas.controllerimpl;
+package com.beratoztas.controller.impl;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;

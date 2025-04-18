@@ -4,6 +4,9 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 
 import com.beratoztas.mail.IMailService;
+import com.beratoztas.message.config.RabbitMQConfig;
+import com.beratoztas.message.event.OrderCreatedEvent;
+import com.beratoztas.message.event.OrderStatusChangedEvent;
 
 import lombok.extern.slf4j.Slf4j;
 

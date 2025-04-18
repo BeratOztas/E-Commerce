@@ -1,4 +1,4 @@
-package com.beratoztas.serviceimpl;
+package com.beratoztas.service.impl;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

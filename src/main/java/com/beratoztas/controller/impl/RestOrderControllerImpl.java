@@ -1,4 +1,4 @@
-package com.beratoztas.controllerimpl;
+package com.beratoztas.controller.impl;
 
 import java.util.List;
 

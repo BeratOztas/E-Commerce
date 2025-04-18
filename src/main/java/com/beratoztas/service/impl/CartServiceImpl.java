@@ -1,4 +1,4 @@
-package com.beratoztas.serviceimpl;
+package com.beratoztas.service.impl;
 
 import java.util.Optional;
 

@@ -1,4 +1,4 @@
-package com.beratoztas.serviceimpl;
+package com.beratoztas.service.impl;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -22,9 +22,9 @@ import com.beratoztas.enums.OrderStatus;
 import com.beratoztas.exception.BaseException;
 import com.beratoztas.exception.ErrorMessage;
 import com.beratoztas.exception.MessageType;
-import com.beratoztas.message.OrderCreatedEvent;
 import com.beratoztas.message.OrderProducer;
-import com.beratoztas.message.OrderStatusChangedEvent;
+import com.beratoztas.message.event.OrderCreatedEvent;
+import com.beratoztas.message.event.OrderStatusChangedEvent;
 import com.beratoztas.repository.AddressRepository;
 import com.beratoztas.repository.CartItemRepository;
 import com.beratoztas.repository.CartRepository;
