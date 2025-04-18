@@ -4,6 +4,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -58,7 +59,7 @@ public class RestUserControllerImpl extends RestBaseController implements IRestU
 	@PreAuthorize("hasRole('ADMIN')")
 	@SecurityRequirement(name = "BearerAuth")
 	@Override
-	public ApiResponse<PageResponse<UserResponse>> getAllUsers(RestPageRequest request) {
+	public ApiResponse<PageResponse<UserResponse>> getAllUsers(@ModelAttribute RestPageRequest request) {
 		return ok(userService.getAllUsers(request));
 	}
 

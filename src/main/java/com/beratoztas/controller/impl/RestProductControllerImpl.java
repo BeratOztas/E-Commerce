@@ -3,6 +3,7 @@ package com.beratoztas.controller.impl;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -46,7 +47,7 @@ public class RestProductControllerImpl extends RestBaseController implements IRe
 	@Operation(summary = "Get all products (paginated)", description = "Returns a paginated list of all available products.")
 	@GetMapping
 	@Override
-	public ApiResponse<PageResponse<ProductResponse>> getAllProducts(RestPageRequest request) {
+	public ApiResponse<PageResponse<ProductResponse>> getAllProducts(@ModelAttribute RestPageRequest request) {
 		return ApiResponse.ok(productService.getAllProducts(request));	
 	}
 

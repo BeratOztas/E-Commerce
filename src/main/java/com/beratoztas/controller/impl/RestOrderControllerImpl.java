@@ -48,7 +48,7 @@ public class RestOrderControllerImpl extends RestBaseController implements IRest
 		return ok(orderService.getOrderById(orderId, userDetails));
 	}
 	
-	@Operation(summary = "Get user orders ", description = "Retrieves paginated list of authenticated user's past orders.")
+	@Operation(summary = "Get user orders (paginated) ", description = "Retrieves paginated list of authenticated user's past orders.")
 	@GetMapping("/me")
 	@PreAuthorize("hasRole('USER')")
 	@SecurityRequirement(name = "BearerAuth")

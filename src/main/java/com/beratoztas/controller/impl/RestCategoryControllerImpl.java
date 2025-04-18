@@ -3,6 +3,7 @@ package com.beratoztas.controller.impl;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -45,7 +46,7 @@ public class RestCategoryControllerImpl extends RestBaseController implements IR
 	@Operation(summary = "Get all categories (paginated)", description = "Returns a paginated list of all available categories.")
 	@GetMapping
 	@Override
-	public ApiResponse<PageResponse<CategoryResponse>> getAllCategories(RestPageRequest request) {
+	public ApiResponse<PageResponse<CategoryResponse>> getAllCategories(@ModelAttribute RestPageRequest request) {
 		return ok(categoryService.getAllCategories(request));
 	}
 
