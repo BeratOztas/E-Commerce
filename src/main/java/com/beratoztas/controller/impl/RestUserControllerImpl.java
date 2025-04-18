@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.beratoztas.controller.ApiResponse;
 import com.beratoztas.controller.IRestUserController;
 import com.beratoztas.controller.RestBaseController;
+import com.beratoztas.requests.RestPageRequest;
 import com.beratoztas.requests.UpdateUserRequest;
+import com.beratoztas.responses.PageResponse;
 import com.beratoztas.responses.UserResponse;
 import com.beratoztas.security.JwtUserDetails;
 import com.beratoztas.service.IUserService;
@@ -48,8 +50,8 @@ public class RestUserControllerImpl extends RestBaseController implements IRestU
 	@GetMapping
 	@PreAuthorize("hasRole('ADMIN')")
 	@Override
-	public ApiResponse<List<UserResponse>> getAllUsers() {
-		return ok(userService.getAllUsers());
+	public ApiResponse<PageResponse<UserResponse>> getAllUsers(RestPageRequest request) {
+		return ok(userService.getAllUsers(request));
 	}
 
 	@PutMapping("/me")

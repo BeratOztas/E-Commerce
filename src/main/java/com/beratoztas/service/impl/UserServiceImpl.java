@@ -3,6 +3,8 @@ package com.beratoztas.service.impl;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.beratoztas.entities.User;
@@ -10,9 +12,12 @@ import com.beratoztas.exception.BaseException;
 import com.beratoztas.exception.ErrorMessage;
 import com.beratoztas.exception.MessageType;
 import com.beratoztas.repository.UserRepository;
+import com.beratoztas.requests.RestPageRequest;
 import com.beratoztas.requests.UpdateUserRequest;
+import com.beratoztas.responses.PageResponse;
 import com.beratoztas.responses.UserResponse;
 import com.beratoztas.service.IUserService;
+import com.beratoztas.utils.PageUtil;
 
 @Service
 public class UserServiceImpl implements IUserService {
@@ -36,13 +41,22 @@ public class UserServiceImpl implements IUserService {
 	}
 
 	@Override
-	public List<UserResponse> getAllUsers() {
-		List<User> users = userRepository.findAll();
-		if (users.isEmpty()) {
-			throw new BaseException(new ErrorMessage(MessageType.USERS_NOT_FOUND, ""));
+	public PageResponse<UserResponse> getAllUsers(RestPageRequest request) {
+		Pageable pageable = PageUtil.toPageable(request);
+		Page<User> page =userRepository.findAll(pageable);
+		
+		if(page.isEmpty()) {
+			throw new BaseException(new ErrorMessage(MessageType.USERS_NOT_FOUND, "No users found."));
 		}
-		return users.stream().map(user -> new UserResponse(user)).collect(Collectors.toList());
+		
+		List<UserResponse> content =page.getContent()
+				.stream()
+				.map(UserResponse::new)
+				.collect(Collectors.toList());
+		
+		return PageUtil.toPageResponse(page, content);
 	}
+	
 
 	@Override
 	public UserResponse updateUserById(Long id, UpdateUserRequest request) {
@@ -63,5 +77,7 @@ public class UserServiceImpl implements IUserService {
 		userRepository.delete(user);
 
 	}
+
+	
 
 }
