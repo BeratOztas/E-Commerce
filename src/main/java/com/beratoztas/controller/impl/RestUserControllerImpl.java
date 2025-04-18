@@ -23,6 +23,8 @@ import com.beratoztas.responses.UserResponse;
 import com.beratoztas.security.JwtUserDetails;
 import com.beratoztas.service.IUserService;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+
 @RestController
 @RequestMapping("/users")
 public class RestUserControllerImpl extends RestBaseController implements IRestUserController {
@@ -35,6 +37,7 @@ public class RestUserControllerImpl extends RestBaseController implements IRestU
 
 	@GetMapping("/me")
 	@PreAuthorize("isAuthenticated()")
+	@SecurityRequirement(name = "BearerAuth")
 	@Override
 	public ApiResponse<UserResponse> getMe(@AuthenticationPrincipal JwtUserDetails userDetails) {
 		return ok(userService.getUserById(userDetails.getId()));
@@ -42,6 +45,7 @@ public class RestUserControllerImpl extends RestBaseController implements IRestU
 
 	@GetMapping("/{id}")
 	@PreAuthorize("hasRole('ADMIN')")
+	@SecurityRequirement(name = "BearerAuth")
 	@Override
 	public ApiResponse<UserResponse> getUserById(@PathVariable(name = "id") Long id) {
 		return ok(userService.getUserById(id));
@@ -49,6 +53,7 @@ public class RestUserControllerImpl extends RestBaseController implements IRestU
 
 	@GetMapping
 	@PreAuthorize("hasRole('ADMIN')")
+	@SecurityRequirement(name = "BearerAuth")
 	@Override
 	public ApiResponse<PageResponse<UserResponse>> getAllUsers(RestPageRequest request) {
 		return ok(userService.getAllUsers(request));
@@ -56,6 +61,7 @@ public class RestUserControllerImpl extends RestBaseController implements IRestU
 
 	@PutMapping("/me")
 	@PreAuthorize("isAuthenticated()")
+	@SecurityRequirement(name = "BearerAuth")
 	@Override
 	public ApiResponse<UserResponse> updateMe(@AuthenticationPrincipal JwtUserDetails userDetails,
 			@RequestBody UpdateUserRequest request) {
@@ -64,6 +70,7 @@ public class RestUserControllerImpl extends RestBaseController implements IRestU
 
 	@PutMapping("/{id}")
 	@PreAuthorize("hasRole('ADMIN')")
+	@SecurityRequirement(name = "BearerAuth")
 	@Override
 	public ApiResponse<UserResponse> updateUserById(@PathVariable(name = "id") Long id,
 			@RequestBody UpdateUserRequest request) {
@@ -72,6 +79,7 @@ public class RestUserControllerImpl extends RestBaseController implements IRestU
 
 	@DeleteMapping("/me")
 	@PreAuthorize("isAuthenticated()")
+	@SecurityRequirement(name = "BearerAuth")
 	@Override
 	public ApiResponse<?> deleteMe(@AuthenticationPrincipal JwtUserDetails userDetails) {
 		userService.deleteUserById(userDetails.getId());
@@ -80,6 +88,7 @@ public class RestUserControllerImpl extends RestBaseController implements IRestU
 
 	@DeleteMapping("/{id}")
 	@PreAuthorize("hasRole('ADMIN')")
+	@SecurityRequirement(name = "BearerAuth")
 	@Override
 	public ApiResponse<?> deleteUserById(@PathVariable(name = "id") Long id) {
 		userService.deleteUserById(id);

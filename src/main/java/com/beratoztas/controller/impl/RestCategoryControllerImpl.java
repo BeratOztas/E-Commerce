@@ -21,6 +21,7 @@ import com.beratoztas.responses.CategoryResponse;
 import com.beratoztas.responses.PageResponse;
 import com.beratoztas.service.ICategoryService;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 
 @RestController
@@ -46,6 +47,7 @@ public class RestCategoryControllerImpl extends RestBaseController implements IR
 	}
 
 	@PostMapping
+	@SecurityRequirement(name = "BearerAuth")
 	@PreAuthorize("hasRole('ADMIN')")
 	@Override
 	public ApiResponse<CategoryResponse> createCategory(@RequestBody @Valid CategoryRequest request) {
@@ -53,6 +55,7 @@ public class RestCategoryControllerImpl extends RestBaseController implements IR
 	}
 
 	@PutMapping("/{id}")
+	@SecurityRequirement(name = "BearerAuth")
 	@Override
 	@PreAuthorize("hasRole('ADMIN')")
 	public ApiResponse<CategoryResponse> updateCategoryById(@PathVariable(name = "id") Long id,@RequestBody @Valid CategoryRequest request) {
@@ -61,6 +64,7 @@ public class RestCategoryControllerImpl extends RestBaseController implements IR
 
 	@DeleteMapping("/{id}")
 	@PreAuthorize("hasRole('ADMIN')")
+	@SecurityRequirement(name = "BearerAuth")
 	@Override
 	public ApiResponse<?> deleteCategoryById(@PathVariable Long id) {
 		categoryService.deleteCategoryById(id);

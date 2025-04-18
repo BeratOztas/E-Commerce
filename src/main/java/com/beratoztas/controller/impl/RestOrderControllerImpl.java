@@ -23,6 +23,7 @@ import com.beratoztas.responses.PageResponse;
 import com.beratoztas.security.JwtUserDetails;
 import com.beratoztas.service.IOrderService;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 
 @RestController
@@ -36,6 +37,7 @@ public class RestOrderControllerImpl extends RestBaseController implements IRest
 	}
 
 	@GetMapping("/{orderId}")
+	@SecurityRequirement(name = "BearerAuth")
 	@PreAuthorize("hasRole('USER')or ('ADMIN')")
 	@Override
 	public ApiResponse<OrderResponse> getOrderById(@PathVariable Long orderId,
@@ -45,6 +47,7 @@ public class RestOrderControllerImpl extends RestBaseController implements IRest
 
 	@GetMapping("/me")
 	@PreAuthorize("hasRole('USER')")
+	@SecurityRequirement(name = "BearerAuth")
 	@Override
 	public ApiResponse<List<OrderResponse>> getMyOrders(@AuthenticationPrincipal JwtUserDetails userDetails) {
 		return ok(orderService.getMyOrders(userDetails));
@@ -52,6 +55,7 @@ public class RestOrderControllerImpl extends RestBaseController implements IRest
 
 	@GetMapping
 	@PreAuthorize("hasRole('ADMIN')")
+	@SecurityRequirement(name = "BearerAuth")
 	@Override
 	public ApiResponse<PageResponse<OrderResponse>> getAllOrders(RestPageRequest request) {
 		return ApiResponse.ok(orderService.getAllOrders(request));
@@ -59,6 +63,7 @@ public class RestOrderControllerImpl extends RestBaseController implements IRest
 
 	@PostMapping
 	@PreAuthorize("hasRole('USER')")
+	@SecurityRequirement(name = "BearerAuth")
 	@Override
 	public ApiResponse<OrderResponse> createOrderFromCart(@AuthenticationPrincipal JwtUserDetails userDetails,
 			@RequestBody @Valid CreateOrderRequest request) {
@@ -67,6 +72,7 @@ public class RestOrderControllerImpl extends RestBaseController implements IRest
 
 	@PutMapping("/{orderId}/status")
 	@PreAuthorize("hasRole('ADMIN')")
+	@SecurityRequirement(name = "BearerAuth")
 	@Override
 	public ApiResponse<OrderResponse> updateOrderStatus(@PathVariable Long orderId,
 			@RequestBody @Valid OrderStatusUpdateRequest newStatus) {

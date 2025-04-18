@@ -19,6 +19,7 @@ import com.beratoztas.responses.PageResponse;
 import com.beratoztas.responses.ProductResponse;
 import com.beratoztas.service.IProductService;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 
 @RestController
@@ -45,6 +46,7 @@ public class RestProductControllerImpl extends RestBaseController implements IRe
 
 	@PostMapping
 	@PreAuthorize("hasRole('ADMIN')")
+	@SecurityRequirement(name = "BearerAuth")
 	@Override
 	public ApiResponse<ProductResponse> createProduct(@RequestBody @Valid ProductRequest request) {
 		return ok(productService.createProduct(request));
@@ -52,6 +54,7 @@ public class RestProductControllerImpl extends RestBaseController implements IRe
 
 	@PutMapping("/{id}")
 	@PreAuthorize("hasRole('ADMIN')")
+	@SecurityRequirement(name = "BearerAuth")
 	@Override
 	public ApiResponse<ProductResponse> updateProductById(@PathVariable(name = "id") Long id,
 			@RequestBody @Valid ProductRequest request) {
@@ -60,6 +63,7 @@ public class RestProductControllerImpl extends RestBaseController implements IRe
 
 	@DeleteMapping("/{id}")
 	@PreAuthorize("hasRole('ADMIN')")
+	@SecurityRequirement(name = "BearerAuth")
 	@Override
 	public ApiResponse<?> deleteProductById(@PathVariable(name = "id") Long id) {
 		productService.deleteProductById(id);
