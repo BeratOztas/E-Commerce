@@ -1,17 +1,15 @@
 package com.beratoztas.controller;
 
-import java.util.List;
-
-import org.springframework.http.ResponseEntity;
-
 import com.beratoztas.requests.ProductRequest;
+import com.beratoztas.requests.RestPageRequest;
+import com.beratoztas.responses.PageResponse;
 import com.beratoztas.responses.ProductResponse;
 
 public interface IRestProductController {
 
 	public ApiResponse<ProductResponse> getProductById(Long id);
 
-	public ApiResponse<List<ProductResponse>> getAllProducts();
+	public ApiResponse<PageResponse<ProductResponse>> getAllProducts(RestPageRequest request);
 
 	public ApiResponse<ProductResponse> createProduct(ProductRequest request);
 

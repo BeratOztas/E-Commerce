@@ -3,6 +3,8 @@ package com.beratoztas.service.impl;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.beratoztas.entities.Category;
@@ -13,8 +15,11 @@ import com.beratoztas.exception.MessageType;
 import com.beratoztas.repository.CategoryRepository;
 import com.beratoztas.repository.ProductRepository;
 import com.beratoztas.requests.ProductRequest;
+import com.beratoztas.requests.RestPageRequest;
+import com.beratoztas.responses.PageResponse;
 import com.beratoztas.responses.ProductResponse;
 import com.beratoztas.service.IProductService;
+import com.beratoztas.utils.PageUtil;
 
 @Service
 public class ProductServiceImpl implements IProductService {
@@ -51,17 +56,22 @@ public class ProductServiceImpl implements IProductService {
 		
 		return new ProductResponse(product);
  	}
+	
 
 	@Override
-	public List<ProductResponse> getAllProducts() {
-		List<Product> products =productRepository.findAll();
-		
-		if(products.isEmpty()) {
-			throw new BaseException(new ErrorMessage(MessageType.PRODUCTS_NOT_FOUND, ""));
+	public PageResponse<ProductResponse> getAllProducts(RestPageRequest request) {
+		Pageable pageable =PageUtil.toPageable(request);
+		Page<Product> page =productRepository.findAll(pageable);
+		if(page.isEmpty()) {
+			throw new BaseException(new ErrorMessage(MessageType.PRODUCTS_NOT_FOUND, "No products found."));
 		}
-		return products.stream()
-				.map(product -> new ProductResponse(product)).collect(Collectors.toList());
+		List<ProductResponse> content =page.getContent().stream()
+				.map(ProductResponse::new)
+				.collect(Collectors.toList());
+			
+		return PageUtil.toPageResponse(page, content);
 	}
+
 
 	@Override
 	public ProductResponse createProduct(ProductRequest request) {
@@ -86,5 +96,6 @@ public class ProductServiceImpl implements IProductService {
 		Product product =findByProductId(id);
 		productRepository.delete(product);
 	}
+
 
 }
