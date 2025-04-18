@@ -1,9 +1,5 @@
 package com.beratoztas.controller.impl;
 
-import java.util.List;
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,13 +13,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.beratoztas.controller.ApiResponse;
 import com.beratoztas.controller.IRestProductController;
 import com.beratoztas.controller.RestBaseController;
-import com.beratoztas.entities.Product;
 import com.beratoztas.requests.ProductRequest;
 import com.beratoztas.requests.RestPageRequest;
 import com.beratoztas.responses.PageResponse;
 import com.beratoztas.responses.ProductResponse;
 import com.beratoztas.service.IProductService;
-import com.beratoztas.utils.PageUtil;
 
 import jakarta.validation.Valid;
 
@@ -46,8 +40,7 @@ public class RestProductControllerImpl extends RestBaseController implements IRe
 	@GetMapping
 	@Override
 	public ApiResponse<PageResponse<ProductResponse>> getAllProducts(RestPageRequest request) {
-		PageResponse<ProductResponse> response = productService.getAllProducts(request);
-		return ApiResponse.ok(response);	
+		return ApiResponse.ok(productService.getAllProducts(request));	
 	}
 
 	@PostMapping

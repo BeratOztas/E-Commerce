@@ -7,6 +7,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,9 +34,12 @@ import com.beratoztas.repository.OrderRepository;
 import com.beratoztas.repository.UserRepository;
 import com.beratoztas.requests.CreateOrderRequest;
 import com.beratoztas.requests.OrderStatusUpdateRequest;
+import com.beratoztas.requests.RestPageRequest;
 import com.beratoztas.responses.OrderResponse;
+import com.beratoztas.responses.PageResponse;
 import com.beratoztas.security.JwtUserDetails;
 import com.beratoztas.service.IOrderService;
+import com.beratoztas.utils.PageUtil;
 
 import io.micrometer.common.util.StringUtils;
 
@@ -84,11 +89,21 @@ public class OrderServiceImpl implements IOrderService {
 	}
 
 	@Override
-	public List<OrderResponse> getAllOrders() {
-		List<Order> orders =orderRepository.findAll();
+	public PageResponse<OrderResponse> getAllOrders(RestPageRequest request) {
+		Pageable pageable = PageUtil.toPageable(request);
+		Page<Order> page =orderRepository.findAll(pageable);
 		
-		return orders.stream()
-				.map(order -> new OrderResponse(order)).collect(Collectors.toList());
+		if(page.isEmpty()) {
+			throw new BaseException(new ErrorMessage(MessageType.ORDERS_NOT_FOUND, "No orders found."));
+		}
+		
+		List<OrderResponse> content =page.getContent()
+				.stream()
+				.map(OrderResponse::new)
+				.collect(Collectors.toList());
+		
+		return PageUtil.toPageResponse(page, content);
+		
 	}
 
 	@Override
@@ -271,5 +286,7 @@ public class OrderServiceImpl implements IOrderService {
 	    newCart.setStatus(CartStatus.ACTIVE);
 	    cartRepository.save(newCart);
 	}
+
+	
 	
 }

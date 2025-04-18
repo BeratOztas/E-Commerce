@@ -9,7 +9,7 @@ public interface IProductService {
 
 	public ProductResponse getProductById(Long id);
 
-	PageResponse<ProductResponse> getAllProducts(RestPageRequest request);
+	public PageResponse<ProductResponse> getAllProducts(RestPageRequest request);
 
 	public ProductResponse createProduct(ProductRequest request);
 

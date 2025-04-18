@@ -4,7 +4,9 @@ import java.util.List;
 
 import com.beratoztas.requests.CreateOrderRequest;
 import com.beratoztas.requests.OrderStatusUpdateRequest;
+import com.beratoztas.requests.RestPageRequest;
 import com.beratoztas.responses.OrderResponse;
+import com.beratoztas.responses.PageResponse;
 import com.beratoztas.security.JwtUserDetails;
 
 public interface IRestOrderController {
@@ -13,7 +15,7 @@ public interface IRestOrderController {
 
 	public ApiResponse<List<OrderResponse>> getMyOrders(JwtUserDetails userDetails);
 
-	public ApiResponse<List<OrderResponse>> getAllOrders();
+	public ApiResponse<PageResponse<OrderResponse>> getAllOrders(RestPageRequest request);
 
 	public ApiResponse<OrderResponse> createOrderFromCart(JwtUserDetails userDetails, CreateOrderRequest request);
 

@@ -27,6 +27,7 @@ public enum MessageType {
 	CART_NULL_OR_EMPTY("1016","Cart null or empty...!"),
 	ORDER_NOT_FOUND("1015","Order Not Found ..!!"),
 	INVALID_QUANTITY("1014","Quantity must be at least 1. "),
+	ORDERS_NOT_FOUND("1022", "No orders found."),
 	INVALID_REFRESH_TOKEN("1020","Refresh Token Invalid.!"),
 	MAIL_SEND_FAILED("1021","MAIL COULD NOT SEND"),
 	USERNAME_NOT_FOUND("1005","Kullanıcı adı bulunamadı.");

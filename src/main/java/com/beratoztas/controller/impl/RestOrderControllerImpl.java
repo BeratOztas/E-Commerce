@@ -17,7 +17,9 @@ import com.beratoztas.controller.IRestOrderController;
 import com.beratoztas.controller.RestBaseController;
 import com.beratoztas.requests.CreateOrderRequest;
 import com.beratoztas.requests.OrderStatusUpdateRequest;
+import com.beratoztas.requests.RestPageRequest;
 import com.beratoztas.responses.OrderResponse;
+import com.beratoztas.responses.PageResponse;
 import com.beratoztas.security.JwtUserDetails;
 import com.beratoztas.service.IOrderService;
 
@@ -26,9 +28,9 @@ import jakarta.validation.Valid;
 @RestController
 @RequestMapping("/orders")
 public class RestOrderControllerImpl extends RestBaseController implements IRestOrderController {
-	
+
 	private IOrderService orderService;
-	
+
 	public RestOrderControllerImpl(IOrderService orderService) {
 		this.orderService = orderService;
 	}
@@ -36,7 +38,8 @@ public class RestOrderControllerImpl extends RestBaseController implements IRest
 	@GetMapping("/{orderId}")
 	@PreAuthorize("hasRole('USER')or ('ADMIN')")
 	@Override
-	public ApiResponse<OrderResponse> getOrderById(@PathVariable Long orderId,@AuthenticationPrincipal JwtUserDetails userDetails) {
+	public ApiResponse<OrderResponse> getOrderById(@PathVariable Long orderId,
+			@AuthenticationPrincipal JwtUserDetails userDetails) {
 		return ok(orderService.getOrderById(orderId, userDetails));
 	}
 
@@ -50,21 +53,23 @@ public class RestOrderControllerImpl extends RestBaseController implements IRest
 	@GetMapping
 	@PreAuthorize("hasRole('ADMIN')")
 	@Override
-	public ApiResponse<List<OrderResponse>> getAllOrders() {
-		return ok(orderService.getAllOrders());
+	public ApiResponse<PageResponse<OrderResponse>> getAllOrders(RestPageRequest request) {
+		return ApiResponse.ok(orderService.getAllOrders(request));
 	}
 
 	@PostMapping
 	@PreAuthorize("hasRole('USER')")
 	@Override
-	public ApiResponse<OrderResponse> createOrderFromCart(@AuthenticationPrincipal JwtUserDetails userDetails,@RequestBody @Valid CreateOrderRequest request) {
+	public ApiResponse<OrderResponse> createOrderFromCart(@AuthenticationPrincipal JwtUserDetails userDetails,
+			@RequestBody @Valid CreateOrderRequest request) {
 		return ok(orderService.createOrderFromCart(userDetails, request));
 	}
 
 	@PutMapping("/{orderId}/status")
 	@PreAuthorize("hasRole('ADMIN')")
 	@Override
-	public ApiResponse<OrderResponse> updateOrderStatus(@PathVariable Long orderId,@RequestBody @Valid OrderStatusUpdateRequest newStatus) {
+	public ApiResponse<OrderResponse> updateOrderStatus(@PathVariable Long orderId,
+			@RequestBody @Valid OrderStatusUpdateRequest newStatus) {
 		return ok(orderService.updateOrderStatus(orderId, newStatus));
 	}
 
