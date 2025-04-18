@@ -1,7 +1,5 @@
 package com.beratoztas.controller.impl;
 
-import java.util.List;
-
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,9 +19,12 @@ import com.beratoztas.responses.CategoryResponse;
 import com.beratoztas.responses.PageResponse;
 import com.beratoztas.service.ICategoryService;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
+@Tag(name = "Category", description = "Category Management ")
 @RestController
 @RequestMapping("/categories")
 public class RestCategoryControllerImpl extends RestBaseController implements IRestCategoryController {
@@ -34,18 +35,21 @@ public class RestCategoryControllerImpl extends RestBaseController implements IR
 		this.categoryService = categoryService;
 	}
 
+	@Operation(summary = "Get category by ID", description = "Retrieves the details of a category by its ID.")
 	@GetMapping("/{id}")
 	@Override
 	public ApiResponse<CategoryResponse> getCategoryById(@PathVariable(name = "id") Long id) {
 		return ok(categoryService.getCategoryById(id));
 	}
 
+	@Operation(summary = "Get all categories (paginated)", description = "Returns a paginated list of all available categories.")
 	@GetMapping
 	@Override
 	public ApiResponse<PageResponse<CategoryResponse>> getAllCategories(RestPageRequest request) {
 		return ok(categoryService.getAllCategories(request));
 	}
 
+	@Operation(summary = "Create new category", description = "Creates a new category in the system. Accessible by users with 'ADMIN' role.")
 	@PostMapping
 	@SecurityRequirement(name = "BearerAuth")
 	@PreAuthorize("hasRole('ADMIN')")
@@ -54,6 +58,7 @@ public class RestCategoryControllerImpl extends RestBaseController implements IR
 		return ok(categoryService.createCategory(request));
 	}
 
+	@Operation(summary = "Update category by ID", description = "Updates the details of an existing category by its ID. Accessible by users with 'ADMIN' role.")
 	@PutMapping("/{id}")
 	@SecurityRequirement(name = "BearerAuth")
 	@Override
@@ -62,6 +67,7 @@ public class RestCategoryControllerImpl extends RestBaseController implements IR
 		return ok(categoryService.updateCategoryById(id, request));
 	}
 
+	@Operation(summary = "Delete category by ID", description = "Deletes a category by its ID. Accessible by users with 'ADMIN' role.")
 	@DeleteMapping("/{id}")
 	@PreAuthorize("hasRole('ADMIN')")
 	@SecurityRequirement(name = "BearerAuth")

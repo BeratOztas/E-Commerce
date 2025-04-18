@@ -19,9 +19,12 @@ import com.beratoztas.responses.PageResponse;
 import com.beratoztas.responses.ProductResponse;
 import com.beratoztas.service.IProductService;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
+@Tag(name = "Product", description = "Product Management")
 @RestController
 @RequestMapping("/products")
 public class RestProductControllerImpl extends RestBaseController implements IRestProductController {
@@ -32,18 +35,22 @@ public class RestProductControllerImpl extends RestBaseController implements IRe
 		this.productService = productService;
 	}
 
+	@Operation(summary = "Get product by ID", description = "Retrieves product details by product ID.")
 	@GetMapping("/{id}")
 	@Override
 	public ApiResponse<ProductResponse> getProductById(@PathVariable(name = "id") Long id) {
 		return ok(productService.getProductById(id));
 	}
 
+	
+	@Operation(summary = "Get all products (paginated)", description = "Returns a paginated list of all available products.")
 	@GetMapping
 	@Override
 	public ApiResponse<PageResponse<ProductResponse>> getAllProducts(RestPageRequest request) {
 		return ApiResponse.ok(productService.getAllProducts(request));	
 	}
 
+	@Operation(summary = "Create a new product", description = "Creates a new product based on the provided product details. Only accessible by users with 'ADMIN' role.")
 	@PostMapping
 	@PreAuthorize("hasRole('ADMIN')")
 	@SecurityRequirement(name = "BearerAuth")
@@ -52,6 +59,7 @@ public class RestProductControllerImpl extends RestBaseController implements IRe
 		return ok(productService.createProduct(request));
 	}
 
+	@Operation(summary = "Update product by ID", description = "Updates the product details for the specified product ID. Only accessible by users with 'ADMIN' role.")
 	@PutMapping("/{id}")
 	@PreAuthorize("hasRole('ADMIN')")
 	@SecurityRequirement(name = "BearerAuth")
@@ -61,6 +69,7 @@ public class RestProductControllerImpl extends RestBaseController implements IRe
 		return ok(productService.updateProductById(id, request));
 	}
 
+	@Operation(summary = "Delete product by ID", description = "Deletes the product with the specified ID. Only accessible by users with 'ADMIN' role.")
 	@DeleteMapping("/{id}")
 	@PreAuthorize("hasRole('ADMIN')")
 	@SecurityRequirement(name = "BearerAuth")

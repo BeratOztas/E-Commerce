@@ -19,8 +19,11 @@ import com.beratoztas.responses.CartResponse;
 import com.beratoztas.security.JwtUserDetails;
 import com.beratoztas.service.ICartService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
+@Tag(name = "Cart", description = "User Cart Management")
 @RestController
 @RequestMapping("/cart")
 public class RestCartControllerImpl extends RestBaseController implements IRestCartController {
@@ -31,18 +34,21 @@ public class RestCartControllerImpl extends RestBaseController implements IRestC
 		this.cartService = cartService;
 	}
 
+	@Operation(summary = "Get user's cart", description = "Retrieves the details of the user's current cart.")
 	@GetMapping
 	@Override
 	public ApiResponse<CartResponse> getMyCart(@AuthenticationPrincipal JwtUserDetails userDetails) {
 		return ok(cartService.getMyCart(userDetails));
 	}
 	
+	@Operation(summary = "Add item to cart", description = "Adds a product to the user's cart.")
 	@PostMapping("/items")
 	@Override
 	public ApiResponse<CartResponse> addItemToCart(@AuthenticationPrincipal JwtUserDetails userDetails,@RequestBody @Valid AddCartItemRequest request) {
 		return ok(cartService.addItemToCart(userDetails, request));
 	}
 
+	@Operation(summary = "Update item quantity in cart", description = "Updates the quantity of an existing item in the user's cart.")	
 	@PutMapping("/items/{cartItemId}")
 	@Override
 	public ApiResponse<CartResponse> updateCartItemQuantity(@AuthenticationPrincipal JwtUserDetails userDetails,@PathVariable Long cartItemId,
@@ -50,14 +56,15 @@ public class RestCartControllerImpl extends RestBaseController implements IRestC
 		return ok(cartService.updateCartItemQuantity(userDetails, cartItemId, request));
 	}
 
-	
+	@Operation(summary = "Remove item from cart", description = "Removes a specific item from the user's cart.")
 	@DeleteMapping("/items/{cartItemId}")
 	@Override
 	public ApiResponse<?> removeCartItem(@AuthenticationPrincipal JwtUserDetails userDetails,@PathVariable Long cartItemId) {
 		cartService.removeCartItem(userDetails, cartItemId);
 		return ApiResponse.ok("Cart item removed successfully");
 	}
-
+	
+	@Operation(summary = "Clear all items from cart", description = "Clears all items from the user's cart.")
 	@DeleteMapping
 	@Override
 	public ApiResponse<?> clearCart(@AuthenticationPrincipal JwtUserDetails userDetails) {

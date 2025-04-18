@@ -19,8 +19,11 @@ import com.beratoztas.responses.AuthResponse;
 import com.beratoztas.service.IAuthenticationService;
 import com.beratoztas.utils.CookieUtil;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
+@Tag(name = "Authentication", description = "Handles user registration, login, logout, and refresh token")
 @RestController
 @RequestMapping("/auth")
 public class RestAuthenticationControllerImpl extends RestBaseController  implements IRestAuthenticationController{
@@ -31,6 +34,7 @@ public class RestAuthenticationControllerImpl extends RestBaseController  implem
 		this.authenticationService =authenticationService;
 	}
 
+	@Operation(summary = "Register new user", description = "Registers a user and returns JWT access and refresh tokens in cookie and body.")
 	@Override
 	@PostMapping("/register")
 	public ResponseEntity<ApiResponse<AuthResponse>> register(@RequestBody @Valid RegisterRequest request) {
@@ -41,6 +45,7 @@ public class RestAuthenticationControllerImpl extends RestBaseController  implem
 				.body(ApiResponse.ok(response));
 	}
 
+	@Operation(summary = "Login user", description = "Authenticates a user and returns access and refresh tokens.")
 	@Override
 	@PostMapping("/login")
 	public ResponseEntity<ApiResponse<AuthResponse>> login(@RequestBody @Valid LoginRequest request) {
@@ -50,6 +55,7 @@ public class RestAuthenticationControllerImpl extends RestBaseController  implem
 				.body(ApiResponse.ok(response));
 	}
 
+	 @Operation(summary = "Refresh access token", description = "Creates new access and refresh token using the provided refresh token.")
 	@Override
 	@PostMapping("/refresh")
 	public ResponseEntity<ApiResponse<AuthResponse>> refresh(@RequestBody @Valid RefreshTokenRequest request) {
@@ -58,7 +64,8 @@ public class RestAuthenticationControllerImpl extends RestBaseController  implem
 		return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, accessTokenCookie.toString())
 				.body(ApiResponse.ok(response));
 	}
-
+	 
+	@Operation(summary = "Logout user", description = "Deletes refresh token from Redis and clears access token cookie.")
 	@Override
 	@PostMapping("/logout")
 	public ResponseEntity<ApiResponse<?>> logout(@RequestBody LogoutTokenRequest request) {
