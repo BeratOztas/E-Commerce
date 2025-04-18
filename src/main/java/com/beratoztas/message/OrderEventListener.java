@@ -24,4 +24,18 @@ public class OrderEventListener {
 		 mailService.sendOrderConfirmationEmail(event.getEmail(), event.getOrderId(), event.getTotalPrice());
 	}
 	
+	@RabbitListener(queues = RabbitMQConfig.ORDER_STATUS_QUEUE)
+	public void handleOrderStatusChangedEvent(OrderStatusChangedEvent event) {
+		 log.info("📥 [RabbitMQ] Received OrderStatusChangedEvent: {}", event);
+		 
+		 String body =String.format("Dear Customer,\n"
+		 		+ "Your order #%d has been updated from [%s] to [%s].",
+				 event.getOrderId()
+				 ,event.getOldStatus().name()
+				 ,event.getNewStatus().name()
+			);
+		 
+		 mailService.sendEmail(event.getEmail(), "Order Status Updated", body);
+	}
+	
 }

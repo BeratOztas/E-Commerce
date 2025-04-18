@@ -24,6 +24,7 @@ import com.beratoztas.exception.ErrorMessage;
 import com.beratoztas.exception.MessageType;
 import com.beratoztas.message.OrderCreatedEvent;
 import com.beratoztas.message.OrderProducer;
+import com.beratoztas.message.OrderStatusChangedEvent;
 import com.beratoztas.repository.AddressRepository;
 import com.beratoztas.repository.CartItemRepository;
 import com.beratoztas.repository.CartRepository;
@@ -111,13 +112,32 @@ public class OrderServiceImpl implements IOrderService {
 	}
 	
 	@Override
-	public OrderResponse updateOrderStatus(Long orderId, OrderStatusUpdateRequest newStatus) {
+	public OrderResponse updateOrderStatus(Long orderId, OrderStatusUpdateRequest request) {
 		Order order =getOrder(orderId);
 		
-		order.setStatus(newStatus.getStatus());
+		OrderStatus oldStatus =order.getStatus();
+		OrderStatus newStatus  =request.getStatus();
+		
+		order.setStatus(newStatus);
 		orderRepository.save(order);
+		
+		OrderStatusChangedEvent event =createOrderStatusChangedEvent(order, oldStatus);
+		
+		orderProducer.sendOrderStatusChangedEvent(event);
+		
 		return new OrderResponse(order);
 	}
+	
+	
+	private OrderStatusChangedEvent createOrderStatusChangedEvent(Order order,OrderStatus oldStatus) {
+		return new OrderStatusChangedEvent(
+				order.getId(), order.getUser().getId()
+				, order.getUser().getEmail()
+				, oldStatus
+				, order.getStatus()
+			);
+	}
+	
 	
 	private User getUser(Long userId) {
 	    return userRepository.findById(userId)

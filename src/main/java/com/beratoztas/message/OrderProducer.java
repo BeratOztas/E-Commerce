@@ -16,4 +16,8 @@ public class OrderProducer {
 		rabbitTemplate.convertAndSend(RabbitMQConfig.ORDER_EXCHANGE, RabbitMQConfig.ORDER_ROUTING_KEY, orderCreatedEvent);
 	}
 	
+	public void sendOrderStatusChangedEvent(OrderStatusChangedEvent event) {
+		rabbitTemplate.convertAndSend(RabbitMQConfig.ORDER_EXCHANGE, RabbitMQConfig.ORDER_STATUS_ROUTING_KEY, event);
+	}
+	
 }

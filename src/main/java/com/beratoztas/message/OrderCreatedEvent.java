@@ -23,7 +23,6 @@ public class OrderCreatedEvent implements Serializable {
 	private String email;
 	private BigDecimal totalPrice;
 
-	
 	public OrderCreatedEvent(OrderResponse orderResponse) {
 		this.orderId = orderResponse.getId();
 	    this.totalPrice = orderResponse.getTotalPrice();
