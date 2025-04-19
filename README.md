@@ -41,8 +41,8 @@ HTTP
 ## 📦 Setup
 ### 1.Clone the repo:
 
-git clone  https://github.com/BeratOztas/E-Commerce.git
-cd E-Commerce
+- git clone  https://github.com/BeratOztas/E-Commerce.git
+- cd E-Commerce
 
 
 ### 2.Setup application.properties:
@@ -59,9 +59,9 @@ cd E-Commerce
 - spring.data.redis.host=localhost
 - spring.rabbitmq.host=localhost
 
-3.Run the app:
+### 3.Run the app:
 
-./mvnw spring-boot:run
+- ./mvnw spring-boot:run
 
 ## 🧠 Architecture Highlights
 
