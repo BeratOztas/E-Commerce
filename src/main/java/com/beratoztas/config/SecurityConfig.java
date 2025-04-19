@@ -11,6 +11,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.csrf.CsrfTokenRepository;
 
 import com.beratoztas.security.JwtAuthenticationEntryPoint;
 import com.beratoztas.security.JwtAuthenticationFilter;
@@ -45,9 +47,13 @@ public class SecurityConfig  {
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
 		// Şu an için tüm isteklere izin veriyoruz
-		httpSecurity.csrf().disable()
-				.authorizeHttpRequests(authz -> authz.anyRequest().permitAll())
-				.exceptionHandling(ex ->ex.authenticationEntryPoint(handler))
+		httpSecurity .csrf(csrf -> csrf
+	            .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+		        )
+		        .authorizeHttpRequests(auth -> auth
+		            .requestMatchers("/auth/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll() // sadece login/register/docs açık
+		            .anyRequest().authenticated() // diğer her şey auth zorunlu
+		        ).exceptionHandling(ex ->ex.authenticationEntryPoint(handler))
 				.sessionManagement(sess ->sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
 		// JWT filter'ını Spring Security'ye ekliyoruz
