@@ -32,11 +32,11 @@ Run the app and access:
 
 ## 🔐 Auth Endpoints
 
-http
-POST /auth/register
-POST /auth/login
-POST /auth/refresh
-POST /auth/logout
+HTTP 
+- POST /auth/register
+- POST /auth/login
+- POST /auth/refresh
+- POST /auth/logout
  
 ## 📦 Setup
 1.Clone the repo:
@@ -70,7 +70,7 @@ spring.rabbitmq.host=localhost
 ## 🧠 Architecture Highlights
 
 
-src/
+src -/
 ├── controller
 ├── dto
 ├── entity
@@ -82,16 +82,16 @@ src/
 └── util
 
 ## 👨‍💻 Author
-Berat Öztaş
-GitHub: @BeratOztas
-LinkedIn: linkedin.com/in/beratoztas
+- Berat Öztaş
+- GitHub: @BeratOztas
+- LinkedIn: > linkedin.com/in/beratoztas
 
 ## 🚀 What's Next?
 
-Frontend with React (in progress)
+- Frontend with React (in progress)
 
-Dockerize Full Stack
+- Dockerize Full Stack
 
-CI/CD Pipeline (GitHub Actions or Jenkins)
+- CI/CD Pipeline (GitHub Actions or Jenkins)
 
-If you like this project, feel free to ⭐ star it and follow me on LinkedIn!
+- If you like this project, feel free to ⭐ star it and follow me on LinkedIn!
