@@ -32,19 +32,19 @@ Run the app and access:
 
 ## 🔐 Auth Endpoints
 
-```http
+http
 POST /auth/register
 POST /auth/login
 POST /auth/refresh
 POST /auth/logout
  
-📦 Setup
+## 📦 Setup
 1.Clone the repo:
 
 bash
 Kopyala
 Düzenle
-git clone https://github.com/BeratOztas/E-Commerce.git
+git clone  https://github.com/BeratOztas/E-Commerce.git
 cd E-Commerce
 
 
@@ -67,7 +67,7 @@ spring.rabbitmq.host=localhost
 
 ./mvnw spring-boot:run
 
-🧠 Architecture Highlights
+## 🧠 Architecture Highlights
 
 
 src/
@@ -81,8 +81,17 @@ src/
 ├── message
 └── util
 
-👨‍💻 Author
+## 👨‍💻 Author
 Berat Öztaş
 GitHub: @BeratOztas
 LinkedIn: linkedin.com/in/beratoztas
 
+## 🚀 What's Next?
+
+Frontend with React (in progress)
+
+Dockerize Full Stack
+
+CI/CD Pipeline (GitHub Actions or Jenkins)
+
+If you like this project, feel free to ⭐ star it and follow me on LinkedIn!
