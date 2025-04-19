@@ -4,7 +4,7 @@ import lombok.Getter;
 
 @Getter
 public enum MessageType {
-	
+
 	NO_RECORD_EXIST("1001", "kayıt bulunamadı."),
 	GENERAL_EXCEPTION("9999", "Genel bir hata oluştu."),
 	UNAUTHORIZED("401","User authentication required"),
@@ -31,13 +31,13 @@ public enum MessageType {
 	INVALID_REFRESH_TOKEN("1020","Refresh Token Invalid.!"),
 	MAIL_SEND_FAILED("1021","MAIL COULD NOT SEND"),
 	USERNAME_NOT_FOUND("1005","Kullanıcı adı bulunamadı.");
-	
+
 	private String code;
 	private String message;
-	
+
 	private MessageType(String code,String message) {
 		this.code=code;
 		this.message=message;
 	}
-	
+
 }

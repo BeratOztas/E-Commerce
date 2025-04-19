@@ -1,4 +1,4 @@
-package com.beratoztas.responses;
+package com.beratoztas.dto.response;
 
 import java.util.Date;
 
@@ -8,6 +8,6 @@ import lombok.Data;
 public class BaseDto {
 
 	private Long id;
-	
+
 	private Date createdTime;
 }

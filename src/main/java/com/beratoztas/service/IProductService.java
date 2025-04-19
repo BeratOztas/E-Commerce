@@ -1,9 +1,9 @@
 package com.beratoztas.service;
 
-import com.beratoztas.requests.ProductRequest;
-import com.beratoztas.requests.RestPageRequest;
-import com.beratoztas.responses.PageResponse;
-import com.beratoztas.responses.ProductResponse;
+import com.beratoztas.dto.request.ProductRequest;
+import com.beratoztas.dto.request.RestPageRequest;
+import com.beratoztas.dto.response.PageResponse;
+import com.beratoztas.dto.response.ProductResponse;
 
 public interface IProductService {
 

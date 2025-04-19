@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.beratoztas.controller.ApiResponse;
 import com.beratoztas.controller.IRestCartController;
 import com.beratoztas.controller.RestBaseController;
-import com.beratoztas.requests.AddCartItemRequest;
-import com.beratoztas.requests.UpdateCartItemRequest;
-import com.beratoztas.responses.CartResponse;
+import com.beratoztas.dto.request.AddCartItemRequest;
+import com.beratoztas.dto.request.UpdateCartItemRequest;
+import com.beratoztas.dto.response.CartResponse;
 import com.beratoztas.security.JwtUserDetails;
 import com.beratoztas.service.ICartService;
 
@@ -29,7 +29,7 @@ import jakarta.validation.Valid;
 public class RestCartControllerImpl extends RestBaseController implements IRestCartController {
 
 	private ICartService cartService;
-	
+
 	public RestCartControllerImpl(ICartService cartService) {
 		this.cartService = cartService;
 	}
@@ -40,7 +40,7 @@ public class RestCartControllerImpl extends RestBaseController implements IRestC
 	public ApiResponse<CartResponse> getMyCart(@AuthenticationPrincipal JwtUserDetails userDetails) {
 		return ok(cartService.getMyCart(userDetails));
 	}
-	
+
 	@Operation(summary = "Add item to cart", description = "Adds a product to the user's cart.")
 	@PostMapping("/items")
 	@Override
@@ -48,7 +48,7 @@ public class RestCartControllerImpl extends RestBaseController implements IRestC
 		return ok(cartService.addItemToCart(userDetails, request));
 	}
 
-	@Operation(summary = "Update item quantity in cart", description = "Updates the quantity of an existing item in the user's cart.")	
+	@Operation(summary = "Update item quantity in cart", description = "Updates the quantity of an existing item in the user's cart.")
 	@PutMapping("/items/{cartItemId}")
 	@Override
 	public ApiResponse<CartResponse> updateCartItemQuantity(@AuthenticationPrincipal JwtUserDetails userDetails,@PathVariable Long cartItemId,
@@ -63,7 +63,7 @@ public class RestCartControllerImpl extends RestBaseController implements IRestC
 		cartService.removeCartItem(userDetails, cartItemId);
 		return ApiResponse.ok("Cart item removed successfully");
 	}
-	
+
 	@Operation(summary = "Clear all items from cart", description = "Clears all items from the user's cart.")
 	@DeleteMapping
 	@Override

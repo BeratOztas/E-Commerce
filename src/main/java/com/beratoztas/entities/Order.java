@@ -37,19 +37,19 @@ public class Order extends BaseEntity {
 	@Enumerated(EnumType.STRING)
 	@Column(name = "status", nullable = false)
 	private OrderStatus status = OrderStatus.PENDING;
-	
+
 	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
 	private List<OrderItem> orderItems;
-	
+
 	@OneToOne
 	@JoinColumn(name = "cart_id")
 	private Cart cart;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "user_id")
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private User user;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "address_id")
 	private Address address;

@@ -18,7 +18,6 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -43,7 +42,7 @@ public class Cart extends BaseEntity {
 
 	@OneToMany(mappedBy = "cart", cascade = CascadeType.ALL ,orphanRemoval = true)
 	private List<CartItem> cartItems =new ArrayList<>();
-	
+
 	@OneToOne(mappedBy = "cart")
 	private Order order;
 

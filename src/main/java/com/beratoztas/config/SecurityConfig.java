@@ -11,7 +11,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 import com.beratoztas.security.JwtAuthenticationEntryPoint;
 import com.beratoztas.security.JwtAuthenticationFilter;
@@ -47,10 +46,10 @@ public class SecurityConfig  {
 	public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
 		// Şu an için tüm isteklere izin veriyoruz
 		httpSecurity.csrf().disable()
-				.authorizeHttpRequests(authz -> authz.anyRequest().permitAll())	
+				.authorizeHttpRequests(authz -> authz.anyRequest().permitAll())
 				.exceptionHandling(ex ->ex.authenticationEntryPoint(handler))
 				.sessionManagement(sess ->sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-				
+
 		// JWT filter'ını Spring Security'ye ekliyoruz
 		httpSecurity.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 

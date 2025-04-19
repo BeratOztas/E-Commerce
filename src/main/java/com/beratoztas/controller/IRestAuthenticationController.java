@@ -2,11 +2,11 @@ package com.beratoztas.controller;
 
 import org.springframework.http.ResponseEntity;
 
-import com.beratoztas.requests.LoginRequest;
-import com.beratoztas.requests.LogoutTokenRequest;
-import com.beratoztas.requests.RefreshTokenRequest;
-import com.beratoztas.requests.RegisterRequest;
-import com.beratoztas.responses.AuthResponse;
+import com.beratoztas.dto.request.LoginRequest;
+import com.beratoztas.dto.request.LogoutTokenRequest;
+import com.beratoztas.dto.request.RefreshTokenRequest;
+import com.beratoztas.dto.request.RegisterRequest;
+import com.beratoztas.dto.response.AuthResponse;
 
 public interface IRestAuthenticationController {
 

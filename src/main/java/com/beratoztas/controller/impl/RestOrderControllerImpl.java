@@ -1,6 +1,6 @@
 package com.beratoztas.controller.impl;
 
-import java.util.List;import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -14,11 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.beratoztas.controller.ApiResponse;
 import com.beratoztas.controller.IRestOrderController;
 import com.beratoztas.controller.RestBaseController;
-import com.beratoztas.requests.CreateOrderRequest;
-import com.beratoztas.requests.OrderStatusUpdateRequest;
-import com.beratoztas.requests.RestPageRequest;
-import com.beratoztas.responses.OrderResponse;
-import com.beratoztas.responses.PageResponse;
+import com.beratoztas.dto.request.CreateOrderRequest;
+import com.beratoztas.dto.request.OrderStatusUpdateRequest;
+import com.beratoztas.dto.request.RestPageRequest;
+import com.beratoztas.dto.response.OrderResponse;
+import com.beratoztas.dto.response.PageResponse;
 import com.beratoztas.security.JwtUserDetails;
 import com.beratoztas.service.IOrderService;
 
@@ -47,7 +47,7 @@ public class RestOrderControllerImpl extends RestBaseController implements IRest
 			@AuthenticationPrincipal JwtUserDetails userDetails) {
 		return ok(orderService.getOrderById(orderId, userDetails));
 	}
-	
+
 	@Operation(summary = "Get user orders (paginated) ", description = "Retrieves paginated list of authenticated user's past orders.")
 	@GetMapping("/me")
 	@PreAuthorize("hasRole('USER')")

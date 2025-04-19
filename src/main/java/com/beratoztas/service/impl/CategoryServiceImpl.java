@@ -7,15 +7,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.beratoztas.dto.request.CategoryRequest;
+import com.beratoztas.dto.request.RestPageRequest;
+import com.beratoztas.dto.response.CategoryResponse;
+import com.beratoztas.dto.response.PageResponse;
 import com.beratoztas.entities.Category;
 import com.beratoztas.exception.BaseException;
 import com.beratoztas.exception.ErrorMessage;
 import com.beratoztas.exception.MessageType;
 import com.beratoztas.repository.CategoryRepository;
-import com.beratoztas.requests.CategoryRequest;
-import com.beratoztas.requests.RestPageRequest;
-import com.beratoztas.responses.CategoryResponse;
-import com.beratoztas.responses.PageResponse;
 import com.beratoztas.service.ICategoryService;
 import com.beratoztas.utils.PageUtil;
 
@@ -27,7 +27,7 @@ public class CategoryServiceImpl implements ICategoryService {
 	public CategoryServiceImpl(CategoryRepository categoryRepository) {
 		this.categoryRepository = categoryRepository;
 	}
-	
+
 	private Category findCategoryById(Long id) {
 	    return categoryRepository.findById(id)
 	        .orElseThrow(() -> new BaseException(
@@ -45,7 +45,7 @@ public class CategoryServiceImpl implements ICategoryService {
 	public PageResponse<CategoryResponse> getAllCategories(RestPageRequest  request) {
 		Pageable pageable = PageUtil.toPageable(request);
 		Page<Category> page =categoryRepository.findAll(pageable);
-		
+
 		if (page.isEmpty()) {
 			throw new BaseException(new ErrorMessage(MessageType.CATEGORIES_NOT_FOUND, ""));
 		}
@@ -53,7 +53,7 @@ public class CategoryServiceImpl implements ICategoryService {
 				.stream()
 				.map(CategoryResponse::new)
 				.collect(Collectors.toList());
-		
+
 		return PageUtil.toPageResponse(page, content);
 	}
 

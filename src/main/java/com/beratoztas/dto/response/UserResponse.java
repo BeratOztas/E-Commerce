@@ -1,4 +1,4 @@
-package com.beratoztas.responses;
+package com.beratoztas.dto.response;
 
 import com.beratoztas.entities.User;
 import com.beratoztas.enums.UserRole;
@@ -15,11 +15,11 @@ import lombok.Setter;
 public class UserResponse extends BaseDto {
 
 	private String username;
-	
+
 	private String firstName;
-	
+
 	private String lastName;
-	
+
 	private String email;
 
 	private UserRole userRole;
@@ -33,5 +33,5 @@ public class UserResponse extends BaseDto {
 		this.email =user.getEmail();
 		this.userRole =user.getUserRole();
 	}
-	
+
 }

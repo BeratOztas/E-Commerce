@@ -1,9 +1,9 @@
 package com.beratoztas.controller;
 
-import com.beratoztas.requests.CategoryRequest;
-import com.beratoztas.requests.RestPageRequest;
-import com.beratoztas.responses.CategoryResponse;
-import com.beratoztas.responses.PageResponse;
+import com.beratoztas.dto.request.CategoryRequest;
+import com.beratoztas.dto.request.RestPageRequest;
+import com.beratoztas.dto.response.CategoryResponse;
+import com.beratoztas.dto.response.PageResponse;
 
 public interface IRestCategoryController {
 

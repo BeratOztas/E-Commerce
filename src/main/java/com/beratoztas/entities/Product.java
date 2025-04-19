@@ -25,7 +25,7 @@ public class Product extends BaseEntity {
 
 	@Column(name = "name")
 	private String name;
-	
+
 	@Column(name = "description")
 	private String description;
 
@@ -38,7 +38,7 @@ public class Product extends BaseEntity {
 	@ManyToOne
 	@JoinColumn(name = "category_id")
 	private Category category;
-	
+
 	@OneToMany(mappedBy = "product",cascade = CascadeType.ALL)
 	private List<OrderItem> orderItems;
 

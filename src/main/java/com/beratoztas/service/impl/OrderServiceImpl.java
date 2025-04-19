@@ -12,6 +12,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.beratoztas.dto.request.CreateOrderRequest;
+import com.beratoztas.dto.request.OrderStatusUpdateRequest;
+import com.beratoztas.dto.request.RestPageRequest;
+import com.beratoztas.dto.response.OrderResponse;
+import com.beratoztas.dto.response.PageResponse;
 import com.beratoztas.entities.Address;
 import com.beratoztas.entities.Cart;
 import com.beratoztas.entities.CartItem;
@@ -31,11 +36,6 @@ import com.beratoztas.repository.CartItemRepository;
 import com.beratoztas.repository.CartRepository;
 import com.beratoztas.repository.OrderRepository;
 import com.beratoztas.repository.UserRepository;
-import com.beratoztas.requests.CreateOrderRequest;
-import com.beratoztas.requests.OrderStatusUpdateRequest;
-import com.beratoztas.requests.RestPageRequest;
-import com.beratoztas.responses.OrderResponse;
-import com.beratoztas.responses.PageResponse;
 import com.beratoztas.security.JwtUserDetails;
 import com.beratoztas.service.IOrderService;
 import com.beratoztas.utils.PageUtil;
@@ -84,7 +84,7 @@ public class OrderServiceImpl implements IOrderService {
 
 		Pageable pageable = PageUtil.toPageable(request);
 		Page<Order> page = orderRepository.findByUser(user,pageable);
-		
+
 		if (page.isEmpty()) {
 	        throw new BaseException(new ErrorMessage(MessageType.ORDERS_NOT_FOUND, "You have no orders."));
 	    }

@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.beratoztas.controller.ApiResponse;
 import com.beratoztas.controller.IRestCategoryController;
 import com.beratoztas.controller.RestBaseController;
-import com.beratoztas.requests.CategoryRequest;
-import com.beratoztas.requests.RestPageRequest;
-import com.beratoztas.responses.CategoryResponse;
-import com.beratoztas.responses.PageResponse;
+import com.beratoztas.dto.request.CategoryRequest;
+import com.beratoztas.dto.request.RestPageRequest;
+import com.beratoztas.dto.response.CategoryResponse;
+import com.beratoztas.dto.response.PageResponse;
 import com.beratoztas.service.ICategoryService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -31,7 +31,7 @@ import jakarta.validation.Valid;
 public class RestCategoryControllerImpl extends RestBaseController implements IRestCategoryController {
 
 	private ICategoryService categoryService;
-	
+
 	public RestCategoryControllerImpl(ICategoryService categoryService) {
 		this.categoryService = categoryService;
 	}

@@ -1,4 +1,4 @@
-package com.beratoztas.requests;
+package com.beratoztas.dto.request;
 
 import java.math.BigDecimal;
 

@@ -1,4 +1,4 @@
-package com.beratoztas.requests;
+package com.beratoztas.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,10 +10,10 @@ import lombok.NoArgsConstructor;
 public class RestPageRequest {
 
 	private Integer pageNumber;
-	
+
 	private Integer pageSize;
-	
+
 	private String sortBy;
-	
+
 	private boolean asc =true;
 }

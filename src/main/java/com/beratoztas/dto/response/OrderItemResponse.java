@@ -1,4 +1,4 @@
-package com.beratoztas.responses;
+package com.beratoztas.dto.response;
 
 import java.math.BigDecimal;
 
@@ -14,11 +14,11 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrderItemResponse extends BaseDto {
-    
+
     private String productName;
     private BigDecimal price;
     private Integer quantity;
-    
+
     public OrderItemResponse(OrderItem item) {
         this.setId(item.getId());
         this.setCreatedTime(item.getCreatedTime());

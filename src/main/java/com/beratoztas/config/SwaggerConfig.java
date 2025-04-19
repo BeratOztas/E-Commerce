@@ -24,7 +24,7 @@ public class SwaggerConfig {
 		                    .scheme("bearer")
 		                    .bearerFormat("JWT")))
 				.info(new Info()
-				.title("BeratOztas E-Commerce API")		
+				.title("BeratOztas E-Commerce API")
 				.version("1.0")
 				.description("Portfolio project for showcasing Spring Boot + JWT + Redis + RabbitMQ")
 				.contact(new Contact().name("Berat Oztas").email("berat.oztas.dev@gmail.com"))

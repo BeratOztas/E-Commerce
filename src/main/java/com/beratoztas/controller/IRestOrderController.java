@@ -1,10 +1,10 @@
 package com.beratoztas.controller;
 
-import com.beratoztas.requests.CreateOrderRequest;
-import com.beratoztas.requests.OrderStatusUpdateRequest;
-import com.beratoztas.requests.RestPageRequest;
-import com.beratoztas.responses.OrderResponse;
-import com.beratoztas.responses.PageResponse;
+import com.beratoztas.dto.request.CreateOrderRequest;
+import com.beratoztas.dto.request.OrderStatusUpdateRequest;
+import com.beratoztas.dto.request.RestPageRequest;
+import com.beratoztas.dto.response.OrderResponse;
+import com.beratoztas.dto.response.PageResponse;
 import com.beratoztas.security.JwtUserDetails;
 
 public interface IRestOrderController {

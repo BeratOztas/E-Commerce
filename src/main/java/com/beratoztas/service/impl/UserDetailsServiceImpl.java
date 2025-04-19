@@ -24,15 +24,17 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		User user = userRepository.findByUsername(username);
-		if (user == null)
+		if (user == null) {
 			throw new BaseException(new ErrorMessage(MessageType.USER_NOT_FOUND, "Username : " + username));
+		}
 		return JwtUserDetails.create(user);
 	}
 
 	public UserDetails loadUserById(Long id) {
 		User user = userRepository.findById(id).get();
-		if (user == null)
+		if (user == null) {
 			throw new BaseException(new ErrorMessage(MessageType.USER_NOT_FOUND, "User Id : " +id));
+		}
 		return JwtUserDetails.create(user);
 	}
 

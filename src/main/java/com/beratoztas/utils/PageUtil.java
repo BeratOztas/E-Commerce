@@ -9,8 +9,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.util.StringUtils;
 
-import com.beratoztas.requests.RestPageRequest;
-import com.beratoztas.responses.PageResponse;
+import com.beratoztas.dto.request.RestPageRequest;
+import com.beratoztas.dto.response.PageResponse;
 
 import lombok.experimental.UtilityClass;
 
@@ -18,16 +18,16 @@ import lombok.experimental.UtilityClass;
 public class PageUtil {
 
 	public Pageable toPageable(RestPageRequest request) {
-		
+
 		String sortBy = StringUtils.hasText(request.getSortBy()) ? request.getSortBy() : "id";
 		Sort sort = request.isAsc() ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
-		
+
 		Integer pageNumber =request.getPageNumber() !=null ?request.getPageNumber():0;
 		Integer pageSize =request.getPageSize() !=null ?request.getPageSize() :10;
-		
+
 		return PageRequest.of(pageNumber, pageSize, sort);
 	}
-	
+
 	public <T> PageResponse<T> toPageResponse(Page<?> page,List<T> content){
 		return new PageResponse<>(
 				content,

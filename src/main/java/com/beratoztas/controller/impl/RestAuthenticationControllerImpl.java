@@ -11,11 +11,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.beratoztas.controller.ApiResponse;
 import com.beratoztas.controller.IRestAuthenticationController;
 import com.beratoztas.controller.RestBaseController;
-import com.beratoztas.requests.LoginRequest;
-import com.beratoztas.requests.LogoutTokenRequest;
-import com.beratoztas.requests.RefreshTokenRequest;
-import com.beratoztas.requests.RegisterRequest;
-import com.beratoztas.responses.AuthResponse;
+import com.beratoztas.dto.request.LoginRequest;
+import com.beratoztas.dto.request.LogoutTokenRequest;
+import com.beratoztas.dto.request.RefreshTokenRequest;
+import com.beratoztas.dto.request.RegisterRequest;
+import com.beratoztas.dto.response.AuthResponse;
 import com.beratoztas.service.IAuthenticationService;
 import com.beratoztas.utils.CookieUtil;
 
@@ -27,9 +27,9 @@ import jakarta.validation.Valid;
 @RestController
 @RequestMapping("/auth")
 public class RestAuthenticationControllerImpl extends RestBaseController  implements IRestAuthenticationController{
-	
+
 	private IAuthenticationService authenticationService;
-	
+
 	public RestAuthenticationControllerImpl(IAuthenticationService authenticationService) {
 		this.authenticationService =authenticationService;
 	}
@@ -40,7 +40,7 @@ public class RestAuthenticationControllerImpl extends RestBaseController  implem
 	public ResponseEntity<ApiResponse<AuthResponse>> register(@RequestBody @Valid RegisterRequest request) {
 		AuthResponse response =authenticationService.register(request);
 		ResponseCookie accessTokenCookie =CookieUtil.createAccessTokenCookie(response.getAccessToken());
-		
+
 		return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, accessTokenCookie.toString())
 				.body(ApiResponse.ok(response));
 	}
@@ -64,7 +64,7 @@ public class RestAuthenticationControllerImpl extends RestBaseController  implem
 		return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, accessTokenCookie.toString())
 				.body(ApiResponse.ok(response));
 	}
-	 
+
 	@Operation(summary = "Logout user", description = "Deletes refresh token from Redis and clears access token cookie.")
 	@Override
 	@PostMapping("/logout")

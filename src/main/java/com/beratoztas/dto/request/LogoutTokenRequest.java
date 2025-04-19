@@ -1,6 +1,6 @@
-package com.beratoztas.requests;
+package com.beratoztas.dto.request;
 
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,9 +10,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UpdateCartItemRequest {
+public class LogoutTokenRequest {
 
-	@NotNull
-	private Integer quantity;
-	
+	@NotEmpty
+	private String refreshToken;
 }

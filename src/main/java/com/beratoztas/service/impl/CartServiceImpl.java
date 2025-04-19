@@ -5,6 +5,9 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.beratoztas.dto.request.AddCartItemRequest;
+import com.beratoztas.dto.request.UpdateCartItemRequest;
+import com.beratoztas.dto.response.CartResponse;
 import com.beratoztas.entities.Cart;
 import com.beratoztas.entities.CartItem;
 import com.beratoztas.entities.Product;
@@ -17,9 +20,6 @@ import com.beratoztas.repository.CartItemRepository;
 import com.beratoztas.repository.CartRepository;
 import com.beratoztas.repository.ProductRepository;
 import com.beratoztas.repository.UserRepository;
-import com.beratoztas.requests.AddCartItemRequest;
-import com.beratoztas.requests.UpdateCartItemRequest;
-import com.beratoztas.responses.CartResponse;
 import com.beratoztas.security.JwtUserDetails;
 import com.beratoztas.service.ICartService;
 

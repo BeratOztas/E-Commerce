@@ -1,9 +1,9 @@
 package com.beratoztas.controller;
 
-import com.beratoztas.requests.RestPageRequest;
-import com.beratoztas.requests.UpdateUserRequest;
-import com.beratoztas.responses.PageResponse;
-import com.beratoztas.responses.UserResponse;
+import com.beratoztas.dto.request.RestPageRequest;
+import com.beratoztas.dto.request.UpdateUserRequest;
+import com.beratoztas.dto.response.PageResponse;
+import com.beratoztas.dto.response.UserResponse;
 import com.beratoztas.security.JwtUserDetails;
 
 public interface IRestUserController {

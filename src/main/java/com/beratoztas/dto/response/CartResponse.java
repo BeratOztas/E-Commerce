@@ -1,4 +1,4 @@
-package com.beratoztas.responses;
+package com.beratoztas.dto.response;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,14 +18,14 @@ import lombok.Setter;
 public class CartResponse extends BaseDto {
 
 	private CartStatus status;
-	
+
 	private List<CartItemResponse> cartItems;
-	
+
 	public CartResponse(Cart cart) {
 		this.setId(cart.getId());
 		this.setCreatedTime(cart.getCreatedTime());
 		this.status =cart.getStatus();
-		
+
 		if(cart.getCartItems() !=null) {
 			this.cartItems =cart.getCartItems().stream()
 					.map(cartItem -> new CartItemResponse(cartItem)).collect(Collectors.toList());

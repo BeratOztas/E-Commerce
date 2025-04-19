@@ -1,4 +1,4 @@
-package com.beratoztas.requests;
+package com.beratoztas.dto.request;
 
 import com.beratoztas.enums.OrderStatus;
 
@@ -13,8 +13,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class OrderStatusUpdateRequest {
-	
+
 	@NotNull
 	private OrderStatus status;
-	
+
 }

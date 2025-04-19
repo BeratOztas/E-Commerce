@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.messaging.MessagingException;
 import org.springframework.stereotype.Service;
 
 import com.beratoztas.exception.BaseException;
@@ -44,12 +43,12 @@ public class MailServiceImpl implements IMailService {
 		try {
 			MimeMessage message = mailSender.createMimeMessage();
 			MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
-			
+
 			helper.setFrom(from);
 			helper.setTo(to);
 			helper.setSubject(subject);
 			helper.setText(body,false);
-			
+
 			mailSender.send(message);
 		} catch (jakarta.mail.MessagingException e) {
 			throw new BaseException(new ErrorMessage(MessageType.MAIL_SEND_FAILED, "Failed to send email"+e.getMessage()));

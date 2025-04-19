@@ -14,7 +14,7 @@ public class CookieUtil {
                 .secure(false) // HTTPS için Yayın ortamına geçtiğinde .secure(true)
                 .path("/")
                 .maxAge(Duration.ofHours(1))
-                .sameSite("Lax") // Yayın ortamına geçtiğinde .sameSite("Strict") 
+                .sameSite("Lax") // Yayın ortamına geçtiğinde .sameSite("Strict")
                 .build();
     }
 

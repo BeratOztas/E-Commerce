@@ -1,5 +1,6 @@
-package com.beratoztas.responses;
+package com.beratoztas.dto.request;
 
+import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,13 +8,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class AuthResponse {
+public class RefreshTokenRequest {
 
-	private String message;
-	
-	private Long userId;
-	
-	private String accessToken;
-	
+	@NotEmpty
 	private String refreshToken;
 }

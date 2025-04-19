@@ -8,6 +8,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.beratoztas.dto.request.LoginRequest;
+import com.beratoztas.dto.request.LogoutTokenRequest;
+import com.beratoztas.dto.request.RefreshTokenRequest;
+import com.beratoztas.dto.request.RegisterRequest;
+import com.beratoztas.dto.response.AuthResponse;
 import com.beratoztas.entities.Address;
 import com.beratoztas.entities.User;
 import com.beratoztas.enums.UserRole;
@@ -16,11 +21,6 @@ import com.beratoztas.exception.ErrorMessage;
 import com.beratoztas.exception.MessageType;
 import com.beratoztas.repository.AddressRepository;
 import com.beratoztas.repository.UserRepository;
-import com.beratoztas.requests.LoginRequest;
-import com.beratoztas.requests.LogoutTokenRequest;
-import com.beratoztas.requests.RefreshTokenRequest;
-import com.beratoztas.requests.RegisterRequest;
-import com.beratoztas.responses.AuthResponse;
 import com.beratoztas.security.JwtTokenProvider;
 import com.beratoztas.security.JwtUserDetails;
 import com.beratoztas.service.IAuthenticationService;
@@ -65,8 +65,9 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
 
 		User savedUser = userRepository.save(createUser(request));
 
-		if (savedUser.getUserRole() == UserRole.USER && request.getCity() != null)
+		if (savedUser.getUserRole() == UserRole.USER && request.getCity() != null) {
 			saveAddress(savedUser, request);
+		}
 
 		authenticateUser(request.getUsername(), request.getPassword());
 
@@ -137,8 +138,8 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
 
 		refreshTokenService.deleteRefreshToken(refreshToken);
 	}
-	
-	
+
+
 	private User createUser(RegisterRequest request) {
 		User user = new User();
 
@@ -151,7 +152,7 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
 
 		return user;
 	}
-	
+
 	private void saveAddress(User savedUser, RegisterRequest request) {
 		Address address = new Address();
 
@@ -163,23 +164,23 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
 
 		addressRepository.save(address);
 	}
-	
+
 	private void authenticateUser(String username, String password) {
 		Authentication authentication = authenticationManager.authenticate(
 				new UsernamePasswordAuthenticationToken(username, password));
-		
+
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 	}
-	
+
 	private AuthResponse buildAuthResponse(Long userId, String accessToken, String refreshToken, String message) {
 		AuthResponse response = new AuthResponse();
-		
+
 		response.setUserId(userId);
 		response.setMessage(message);
 		response.setAccessToken(accessToken);
 		response.setRefreshToken(refreshToken);
-		
+
 		return response;
 	}
-	
+
 }

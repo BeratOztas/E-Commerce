@@ -1,4 +1,4 @@
-package com.beratoztas.requests;
+package com.beratoztas.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -10,8 +10,15 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CategoryRequest {
+public class UpdateUserRequest {
 
 	@NotBlank
-	private String name;
+	private String firstName;
+
+	@NotBlank
+	private String lastName;
+
+	@NotBlank
+	private String email;
+
 }

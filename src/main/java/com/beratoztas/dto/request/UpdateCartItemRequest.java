@@ -1,6 +1,5 @@
-package com.beratoztas.requests;
+package com.beratoztas.dto.request;
 
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,13 +10,9 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class AddCartItemRequest {
+public class UpdateCartItemRequest {
 
 	@NotNull
-	private Long productId;
-	
-	@NotNull
-	@Min(1)
 	private Integer quantity;
-	
+
 }

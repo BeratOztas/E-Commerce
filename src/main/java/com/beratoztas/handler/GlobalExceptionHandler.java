@@ -1,6 +1,6 @@
 package com.beratoztas.handler;
 
-import java.net.Inet4Address;
+import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,18 +29,19 @@ public class GlobalExceptionHandler {
 			return ResponseEntity.badRequest().body(createApiError(ex.getMessage(), request));
 		}
 
-		//Validation Exception Handler 
+		//Validation Exception Handler
 		@ExceptionHandler(value = { MethodArgumentNotValidException.class })
 		public ResponseEntity<ApiError<Map<String, List<String>>>> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex, WebRequest request) {
 			Map<String, List<String>> errorsMap = new HashMap<>();
-			
+
 			for (ObjectError objError : ex.getBindingResult().getAllErrors()) {
 				String fieldName = ((FieldError) objError).getField();
 				String message = objError.getDefaultMessage();
-				if (errorsMap.containsKey(fieldName))
+				if (errorsMap.containsKey(fieldName)) {
 					errorsMap.get(fieldName).add(message);
-				else
+				} else {
 					errorsMap.put(fieldName, new ArrayList<>(Arrays.asList(message)));
+				}
 			}
 
 			return ResponseEntity.badRequest().body(createApiError(errorsMap, request));
@@ -62,12 +63,12 @@ public class GlobalExceptionHandler {
 
 		private String getHostName() {
 			try {
-				return Inet4Address.getLocalHost().getHostName();
+				return InetAddress.getLocalHost().getHostName();
 			} catch (UnknownHostException e) {
 				e.printStackTrace();
 			}
 			return null;
 		}
-	
-	
+
+
 }

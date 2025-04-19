@@ -1,4 +1,4 @@
-package com.beratoztas.requests;
+package com.beratoztas.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
