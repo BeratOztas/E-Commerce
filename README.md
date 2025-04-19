@@ -47,17 +47,17 @@ cd E-Commerce
 
 ### 2.Setup application.properties:
 
-properties
+#### properties
 
-spring.datasource.url=jdbc:postgresql://localhost:5432/e_commerce
-spring.datasource.username=YOUR_DB_USER
-spring.datasource.password=YOUR_DB_PASS
+- spring.datasource.url=jdbc:postgresql://localhost:5432/e_commerce
+- spring.datasource.username=YOUR_DB_USER
+- spring.datasource.password=YOUR_DB_PASS
 
-spring.mail.username=YOUR_EMAIL
-spring.mail.password=YOUR_APP_PASSWORD
+- spring.mail.username=YOUR_EMAIL
+- spring.mail.password=YOUR_APP_PASSWORD
 
-spring.data.redis.host=localhost
-spring.rabbitmq.host=localhost
+- spring.data.redis.host=localhost
+- spring.rabbitmq.host=localhost
 
 3.Run the app:
 
@@ -67,15 +67,19 @@ spring.rabbitmq.host=localhost
 
  ```
 src -/
-├── controller
+├── controller / controllerimpl
 ├── dto
 ├── entity
 ├── service / serviceimpl
 ├── repository
 ├── config
+├── exception
+├── handler
 ├── security
 ├── message
-└── util
+├── mail
+├── enums
+└── utils
 ```
 
 ## 👨‍💻 Author
