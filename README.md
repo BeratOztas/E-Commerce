@@ -37,22 +37,18 @@ HTTP
 - POST /auth/login
 - POST /auth/refresh
 - POST /auth/logout
- 
-## 📦 Setup
-1.Clone the repo:
 
-bash
-Kopyala
-Düzenle
+## 📦 Setup
+### 1.Clone the repo:
+
 git clone  https://github.com/BeratOztas/E-Commerce.git
 cd E-Commerce
 
 
-2.Setup application.properties:
+### 2.Setup application.properties:
 
 properties
-Kopyala
-Düzenle
+
 spring.datasource.url=jdbc:postgresql://localhost:5432/e_commerce
 spring.datasource.username=YOUR_DB_USER
 spring.datasource.password=YOUR_DB_PASS
@@ -69,7 +65,7 @@ spring.rabbitmq.host=localhost
 
 ## 🧠 Architecture Highlights
 
-
+ ```
 src -/
 ├── controller
 ├── dto
@@ -80,11 +76,12 @@ src -/
 ├── security
 ├── message
 └── util
+```
 
 ## 👨‍💻 Author
 - Berat Öztaş
-- GitHub: @BeratOztas
-- LinkedIn: > linkedin.com/in/beratoztas
+- GitHub: [@BeratOztas](https://github.com/BeratOztas)
+- LinkedIn: [linkedin.com/in/beratoztas](https://linkedin.com/in/beratoztas)
 
 ## 🚀 What's Next?
 
@@ -94,4 +91,4 @@ src -/
 
 - CI/CD Pipeline (GitHub Actions or Jenkins)
 
-- If you like this project, feel free to ⭐ star it and follow me on LinkedIn!
+- If you like this project, feel free to ⭐ star it and follow me on [LinkedIn](https://linkedin.com/in/beratoztas)!
