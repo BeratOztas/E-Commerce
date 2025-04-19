@@ -38,7 +38,7 @@ POST /auth/login
 POST /auth/refresh
 POST /auth/logout
  
-📦 Setup
+## 📦 Setup
 1.Clone the repo:
 
 bash
@@ -67,7 +67,7 @@ spring.rabbitmq.host=localhost
 
 ./mvnw spring-boot:run
 
-🧠 Architecture Highlights
+## 🧠 Architecture Highlights
 
 
 src/
