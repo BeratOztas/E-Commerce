@@ -38,3 +38,51 @@ POST /auth/login
 POST /auth/refresh
 POST /auth/logout
  
+📦 Setup
+1.Clone the repo:
+
+bash
+Kopyala
+Düzenle
+git clone https://github.com/BeratOztas/E-Commerce.git
+cd E-Commerce
+
+
+2.Setup application.properties:
+
+properties
+Kopyala
+Düzenle
+spring.datasource.url=jdbc:postgresql://localhost:5432/e_commerce
+spring.datasource.username=YOUR_DB_USER
+spring.datasource.password=YOUR_DB_PASS
+
+spring.mail.username=YOUR_EMAIL
+spring.mail.password=YOUR_APP_PASSWORD
+
+spring.data.redis.host=localhost
+spring.rabbitmq.host=localhost
+
+3.Run the app:
+
+./mvnw spring-boot:run
+
+🧠 Architecture Highlights
+
+
+src/
+├── controller
+├── dto
+├── entity
+├── service / serviceimpl
+├── repository
+├── config
+├── security
+├── message
+└── util
+
+👨‍💻 Author
+Berat Öztaş
+GitHub: @BeratOztas
+LinkedIn: linkedin.com/in/beratoztas
+
